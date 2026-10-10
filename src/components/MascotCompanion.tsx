@@ -96,7 +96,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
       {/* Animated Mascot Avatar */}
       <div className="relative group cursor-pointer flex-shrink-0" onClick={() => setTipIndex((prev) => (prev + 1) % SAT_TIPS.length)}>
         <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center p-0.5 shadow-md transform transition-transform group-hover:scale-105">
-          <div className="w-full h-full rounded-[14px] bg-indigo-900/10 dark:bg-indigo-950/30 backdrop-blur flex items-center justify-center text-3xl sm:text-4xl select-none">
+          <div className="w-full h-full rounded-[14px] bg-white/20 dark:bg-black/30 flex items-center justify-center text-3xl sm:text-4xl select-none">
             {mood === 'correct' ? '🎉' : mood === 'incorrect' ? '🧐' : mood === 'streak' ? '⚡' : '🦉'}
           </div>
         </div>
@@ -107,7 +107,7 @@ export const MascotCompanion: React.FC<MascotCompanionProps> = ({
       </div>
 
       {/* Speech Bubble */}
-      <div className={`relative flex-1 p-3 sm:p-3.5 rounded-2xl border shadow-sm backdrop-blur-sm transition-all duration-300 ${color}`}>
+      <div className={`relative flex-1 p-3 sm:p-3.5 rounded-2xl border shadow-sm transition-all duration-300 ${color}`}>
         <div className="absolute -left-2 top-5 w-0 h-0 border-t-8 border-t-transparent border-b-8 border-b-transparent border-r-8 border-r-inherit" />
 
         <div className="flex items-center justify-between gap-2 mb-1">

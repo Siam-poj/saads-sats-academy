@@ -255,9 +255,6 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
     return (
       <div className="max-w-4xl mx-auto py-6 sm:py-10 px-4">
         <div className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-950 dark:from-indigo-950 dark:via-slate-900 dark:to-slate-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden border border-indigo-500/20">
-          <div className="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-indigo-500/10 blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 -ml-16 -mb-16 w-64 h-64 rounded-full bg-amber-500/10 blur-3xl pointer-events-none" />
-
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 justify-between">
             <div className="flex-1 text-center md:text-left">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-400/20 border border-amber-300/30 text-amber-300 text-xs font-bold uppercase tracking-wider mb-4">
@@ -269,11 +266,11 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
               </h1>
               <p className="text-indigo-200 text-sm sm:text-base leading-relaxed mb-6 max-w-xl">
                 Ready, Saad? Test your speed and precision under real UK KS2 SATs exam conditions!
-                10 targeted questions to supercharge your brain:
+                10 targeted questions across all subjects:
               </p>
 
               <div className="grid grid-cols-2 gap-3 mb-8 max-w-md">
-                <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-2xl p-3 border border-white/10 flex items-center gap-3">
+                <div className="bg-white/10 dark:bg-slate-800/60 rounded-2xl p-3 border border-white/10 dark:border-slate-700/60 flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-emerald-500/30 flex items-center justify-center text-emerald-300 font-bold">
                     5
                   </div>
@@ -283,7 +280,7 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
                   </div>
                 </div>
 
-                <div className="bg-white/10 dark:bg-white/5 backdrop-blur-sm rounded-2xl p-3 border border-white/10 flex items-center gap-3">
+                <div className="bg-white/10 dark:bg-slate-800/60 rounded-2xl p-3 border border-white/10 dark:border-slate-700/60 flex items-center gap-3">
                   <div className="w-9 h-9 rounded-xl bg-purple-500/30 flex items-center justify-center text-purple-300 font-bold">
                     5
                   </div>

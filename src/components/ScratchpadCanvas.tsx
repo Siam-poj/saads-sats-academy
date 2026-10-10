@@ -34,7 +34,6 @@ interface Stroke {
 
 export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
   isOpen,
-  onClose,
   className = ''
 }) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -44,42 +43,12 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
   const [color, setColor] = useState<string>('#1e293b');
   const [brushSize, setBrushSize] = useState<number>(3);
   const [paperType, setPaperType] = useState<PaperType>('grid');
-  const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [strokes, setStrokes] = useState<Stroke[]>([]);
-  const [currentStroke, setCurrentStroke] = useState<Stroke | null>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  // Resize canvas to match display container with DPR
-  const resizeCanvas = useCallback(() => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container) return;
-
-    const rect = container.getBoundingClientRect();
-    const dpr = window.devicePixelRatio || 1;
-
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
-
-    const ctx = canvas.getContext('2d');
-    if (ctx) {
-      ctx.scale(dpr, dpr);
-    }
-    redrawAll(strokes);
-  }, [strokes]);
-
-  useEffect(() => {
-    if (isOpen) {
-      const timer = setTimeout(() => {
-        resizeCanvas();
-      }, 50);
-      window.addEventListener('resize', resizeCanvas);
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('resize', resizeCanvas);
-      };
-    }
-  }, [isOpen, resizeCanvas, isExpanded]);
+  // Performance: keep in-flight drawing state in refs to completely avoid re-rendering during drawing!
+  const isDrawingRef = useRef<boolean>(false);
+  const currentStrokeRef = useRef<Stroke | null>(null);
 
   const drawBackground = useCallback((ctx: CanvasRenderingContext2D, width: number, height: number) => {
     ctx.save();
@@ -174,11 +143,42 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
     }
   }, [drawBackground, renderStroke]);
 
+  // Resize canvas to match display container with DPR
+  const resizeCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+
+    const rect = container.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2 to save GPU fill rate
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.scale(dpr, dpr);
+    }
+    redrawAll(strokes);
+  }, [strokes, redrawAll]);
+
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        resizeCanvas();
+      }, 50);
+      window.addEventListener('resize', resizeCanvas);
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('resize', resizeCanvas);
+      };
+    }
+  }, [isOpen, resizeCanvas, isExpanded]);
+
   useEffect(() => {
     redrawAll(strokes);
   }, [paperType, strokes, redrawAll]);
 
-  // Coordinate normalizer
   const getCoordinates = (e: React.MouseEvent | React.TouchEvent): Point | null => {
     const canvas = canvasRef.current;
     if (!canvas) return null;
@@ -202,7 +202,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
   const startDrawing = (e: React.MouseEvent | React.TouchEvent) => {
     const pt = getCoordinates(e);
     if (!pt) return;
-    setIsDrawing(true);
+    isDrawingRef.current = true;
 
     const newStroke: Stroke = {
       tool,
@@ -210,7 +210,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
       size: brushSize,
       points: [pt]
     };
-    setCurrentStroke(newStroke);
+    currentStrokeRef.current = newStroke;
 
     const canvas = canvasRef.current;
     if (canvas) {
@@ -222,39 +222,36 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
   };
 
   const draw = (e: React.MouseEvent | React.TouchEvent) => {
-    if (!isDrawing || !currentStroke) return;
+    if (!isDrawingRef.current || !currentStrokeRef.current) return;
     const pt = getCoordinates(e);
     if (!pt) return;
 
-    const updatedStroke: Stroke = {
-      ...currentStroke,
-      points: [...currentStroke.points, pt]
-    };
-    setCurrentStroke(updatedStroke);
+    const stroke = currentStrokeRef.current;
+    stroke.points.push(pt);
 
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        const points = updatedStroke.points;
+        const points = stroke.points;
         const len = points.length;
         if (len >= 2) {
           ctx.save();
           ctx.lineCap = 'round';
           ctx.lineJoin = 'round';
-          if (updatedStroke.tool === 'eraser') {
+          if (stroke.tool === 'eraser') {
             ctx.globalCompositeOperation = 'destination-out';
-            ctx.lineWidth = updatedStroke.size * 5;
-          } else if (updatedStroke.tool === 'highlighter') {
+            ctx.lineWidth = stroke.size * 5;
+          } else if (stroke.tool === 'highlighter') {
             ctx.globalCompositeOperation = 'multiply';
-            ctx.strokeStyle = updatedStroke.color;
+            ctx.strokeStyle = stroke.color;
             ctx.globalAlpha = 0.35;
-            ctx.lineWidth = updatedStroke.size * 3;
+            ctx.lineWidth = stroke.size * 3;
           } else {
             ctx.globalCompositeOperation = 'source-over';
-            ctx.strokeStyle = updatedStroke.color;
+            ctx.strokeStyle = stroke.color;
             ctx.globalAlpha = 1.0;
-            ctx.lineWidth = updatedStroke.size;
+            ctx.lineWidth = stroke.size;
           }
 
           ctx.beginPath();
@@ -268,12 +265,13 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
   };
 
   const stopDrawing = () => {
-    if (!isDrawing) return;
-    setIsDrawing(false);
-    if (currentStroke && currentStroke.points.length > 0) {
-      setStrokes((prev) => [...prev, currentStroke]);
+    if (!isDrawingRef.current) return;
+    isDrawingRef.current = false;
+    const completed = currentStrokeRef.current;
+    currentStrokeRef.current = null;
+    if (completed && completed.points.length > 0) {
+      setStrokes((prev) => [...prev, completed]);
     }
-    setCurrentStroke(null);
   };
 
   const handleUndo = () => {
@@ -310,15 +308,15 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
 
   return (
     <div
-      className={`flex flex-col bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-indigo-100 dark:border-slate-800 overflow-hidden transition-all duration-300 ${
+      className={`flex flex-col bg-white dark:bg-slate-900 rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden transition-all duration-200 ${
         isExpanded ? 'fixed inset-4 z-50 shadow-2xl' : 'relative h-96'
       } ${className}`}
     >
       {/* Top Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-slate-50 dark:bg-slate-850 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-750 text-sm transition-colors">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2 bg-slate-50 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-700 text-sm">
         <div className="flex items-center gap-1.5 sm:gap-2">
           <span className="font-semibold text-slate-700 dark:text-slate-200 text-xs sm:text-sm flex items-center gap-1.5">
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
             Working Scratchpad
           </span>
 
@@ -333,7 +331,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
                 ? 'bg-indigo-600 text-white shadow-sm'
                 : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600'
             }`}
-            title="Pen (Ballpoint)"
+            title="Pen"
           >
             <PenTool className="w-4 h-4" />
             <span className="hidden sm:inline">Pen</span>
@@ -369,7 +367,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
         </div>
 
         {/* Colors & Size */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           {tool !== 'eraser' && (
             <div className="flex items-center gap-1">
               {colorPalette.map((c) => (
@@ -378,8 +376,8 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
                   type="button"
                   onClick={() => setColor(c.value)}
                   style={{ backgroundColor: c.value }}
-                  className={`w-5 h-5 rounded-full border-2 transition-transform ${
-                    color === c.value ? 'scale-125 border-indigo-400 shadow' : 'border-white dark:border-slate-700 hover:scale-110'
+                  className={`w-4 h-4 sm:w-5 sm:h-5 rounded-full border-2 transition-transform ${
+                    color === c.value ? 'scale-110 border-indigo-500' : 'border-white dark:border-slate-700'
                   }`}
                   title={c.label}
                 />
@@ -391,7 +389,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
           <select
             value={brushSize}
             onChange={(e) => setBrushSize(Number(e.target.value))}
-            className="text-xs bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-md px-1.5 py-1 text-slate-700 dark:text-slate-200 outline-none focus:ring-1 focus:ring-indigo-500"
+            className="text-xs bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-md px-1 py-1 text-slate-700 dark:text-slate-200 outline-none"
           >
             <option value={2}>Fine</option>
             <option value={3}>Medium</option>
@@ -407,7 +405,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
               )
             }
             className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 text-xs flex items-center gap-1"
-            title="Toggle Paper Style (Grid / Lined / Blank)"
+            title="Toggle Paper Style"
           >
             <Grid className="w-3.5 h-3.5" />
             <span className="hidden md:inline capitalize">{paperType}</span>
@@ -429,7 +427,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
             type="button"
             onClick={handleClear}
             className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-xs"
-            title="Clear All Working Out"
+            title="Clear"
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
@@ -439,7 +437,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
             className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 text-xs"
-            title={isExpanded ? 'Minimize Scratchpad' : 'Expand Fullscreen'}
+            title={isExpanded ? 'Minimize' : 'Expand'}
           >
             {isExpanded ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
           </button>
@@ -449,7 +447,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
             type="button"
             onClick={handleDownload}
             className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 text-xs"
-            title="Save Working Out as Image"
+            title="Save Image"
           >
             <Download className="w-3.5 h-3.5" />
           </button>
@@ -472,8 +470,8 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
           onTouchEnd={stopDrawing}
           className="absolute inset-0 w-full h-full block"
         />
-        {strokes.length === 0 && !isDrawing && (
-          <div className="absolute inset-0 pointer-events-none flex items-center justify-center text-slate-400 text-xs sm:text-sm font-medium tracking-wide">
+        {strokes.length === 0 && (
+          <div className="absolute inset-0 pointer-events-none flex items-center justify-center text-slate-400 text-xs sm:text-sm font-medium">
             ✏️ Scratchpad: write column methods, bus-stop divisions, or notes here!
           </div>
         )}

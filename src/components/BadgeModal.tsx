@@ -53,7 +53,7 @@ export const BadgeModal: React.FC<BadgeModalProps> = ({
   const unlockedCount = badges.filter((b) => b.isUnlocked).length;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 dark:bg-black/75 backdrop-blur-sm animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/75 animate-fadeIn">
       <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-indigo-100 dark:border-slate-800 max-h-[90vh] overflow-y-auto transition-colors">
         <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800 mb-6">
           <div className="flex items-center gap-3">
