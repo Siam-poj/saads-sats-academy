@@ -30,12 +30,14 @@ interface SubjectPracticeViewProps {
     playLevelUp: () => void;
   };
   onAwardXp: (amount: number) => void;
+  onRecordAnswer?: (topic: string, isCorrect: boolean, xp: number) => void;
 }
 
 export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
   subjectType,
   playSound,
-  onAwardXp
+  onAwardXp,
+  onRecordAnswer
 }) => {
   const allQuestions = [...SPRINT_SAMPLE_QUESTIONS, ...PRACTICE_EXTRA_QUESTIONS];
 
@@ -112,6 +114,10 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
       onAwardXp(20);
     } else {
       playSound.playIncorrect();
+    }
+
+    if (onRecordAnswer) {
+      onRecordAnswer(activeQuestion.topic, correct, 20);
     }
   };
 

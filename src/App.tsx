@@ -19,6 +19,7 @@ export function App() {
     stats,
     badges,
     recordSprintCompletion,
+    recordPracticeAnswer,
     resetAllProgress,
   } = useGamification();
 
@@ -32,10 +33,6 @@ export function App() {
     playFanfare,
     playTick
   } = useSound();
-
-  const handleAwardXp = (amount: number) => {
-    // XP awarded in practice
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-150">
@@ -79,7 +76,8 @@ export function App() {
               playClick,
               playLevelUp
             }}
-            onAwardXp={handleAwardXp}
+            onAwardXp={() => {}}
+            onRecordAnswer={recordPracticeAnswer}
           />
         )}
 
@@ -93,7 +91,8 @@ export function App() {
               playClick,
               playLevelUp
             }}
-            onAwardXp={handleAwardXp}
+            onAwardXp={() => {}}
+            onRecordAnswer={recordPracticeAnswer}
           />
         )}
 
@@ -107,7 +106,8 @@ export function App() {
               playClick,
               playLevelUp
             }}
-            onAwardXp={handleAwardXp}
+            onAwardXp={() => {}}
+            onRecordAnswer={recordPracticeAnswer}
           />
         )}
 

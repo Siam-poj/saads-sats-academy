@@ -182,6 +182,39 @@ export function useGamification() {
     }
   }, [unlockBadge]);
 
+  const recordPracticeAnswer = useCallback((topic: string, isCorrect: boolean, xpAmount: number = 20) => {
+    setStats((prev) => {
+      const newXp = isCorrect ? prev.xp + xpAmount : prev.xp;
+      const levelInfo = getLevelInfo(newXp);
+
+      const updatedTopicMastery = { ...prev.topicMastery };
+      const topicKey = topic || 'General Practice';
+      if (!updatedTopicMastery[topicKey]) {
+        updatedTopicMastery[topicKey] = { total: 0, correct: 0 };
+      }
+      updatedTopicMastery[topicKey].total += 1;
+      if (isCorrect) {
+        updatedTopicMastery[topicKey].correct += 1;
+      }
+
+      return {
+        ...prev,
+        xp: newXp,
+        level: levelInfo.level,
+        completedQuestionsCount: prev.completedQuestionsCount + 1,
+        correctQuestionsCount: isCorrect ? prev.correctQuestionsCount + 1 : prev.correctQuestionsCount,
+        topicMastery: updatedTopicMastery
+      };
+    });
+
+    if (isCorrect) {
+      const lower = topic.toLowerCase();
+      if (lower.includes('fraction')) unlockBadge('fraction-master');
+      if (lower.includes('grammar') || lower.includes('spag')) unlockBadge('grammar-detective');
+      if (lower.includes('arithmetic') || lower.includes('multiplication')) unlockBadge('arithmetic-ace');
+    }
+  }, [unlockBadge]);
+
   const levelInfo = getLevelInfo(stats.xp);
 
   const resetAllProgress = useCallback(() => {
@@ -212,6 +245,7 @@ export function useGamification() {
     clearNewBadge,
     unlockBadge,
     recordSprintCompletion,
+    recordPracticeAnswer,
     resetAllProgress
   };
 }
