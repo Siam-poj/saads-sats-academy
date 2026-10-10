@@ -2,8 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { UserStats, SprintResult, Badge } from '../types/curriculum';
 import { INITIAL_BADGES } from '../data/badges';
 
-const STATS_STORAGE_KEY = 'saad_sats_user_stats';
-const BADGES_STORAGE_KEY = 'saad_sats_badges';
+const STATS_STORAGE_KEY = 'saad_sats_user_stats_v2'; // bumped to v2 to wipe old test seed data cleanly
+const BADGES_STORAGE_KEY = 'saad_sats_badges_v2';
 
 export const LEVEL_TITLES = [
   { level: 1, title: 'SATs Apprentice', minXp: 0, maxXp: 300 },
@@ -37,10 +37,18 @@ export function getLevelInfo(xp: number) {
 
 export function useGamification() {
   const [stats, setStats] = useState<UserStats>(() => {
+    // Clear out any old v1 keys
+    localStorage.removeItem('saad_sats_user_stats');
+    localStorage.removeItem('saad_sats_badges');
+
     const raw = localStorage.getItem(STATS_STORAGE_KEY);
     if (raw) {
       try {
-        return JSON.parse(raw);
+        const parsed = JSON.parse(raw);
+        // Ensure no old dummy mock values remain
+        if (parsed && typeof parsed.xp === 'number') {
+          return parsed;
+        }
       } catch {
         // Fallback
       }
@@ -49,20 +57,14 @@ export function useGamification() {
     return {
       learnerName: 'Saad',
       level: 1,
-      xp: 140, // Nice initial boost for Year 5 momentum
-      streakDays: 3,
+      xp: 0,
+      streakDays: 1, // Fresh Day 1!
       lastActiveDate: today,
-      completedQuestionsCount: 15,
-      correctQuestionsCount: 13,
-      sprintsCompleted: 2,
-      badgesUnlocked: ['first-sprint'],
-      topicMastery: {
-        'Decimals & Place Value': { total: 4, correct: 4 },
-        'Long Multiplication': { total: 3, correct: 2 },
-        'Fractions': { total: 4, correct: 3 },
-        'Word Classes': { total: 3, correct: 3 },
-        'Punctuation': { total: 3, correct: 2 },
-      },
+      completedQuestionsCount: 0,
+      correctQuestionsCount: 0,
+      sprintsCompleted: 0,
+      badgesUnlocked: [],
+      topicMastery: {},
       history: []
     };
   });
@@ -76,9 +78,8 @@ export function useGamification() {
         // Fallback
       }
     }
-    return INITIAL_BADGES.map((b) =>
-      b.id === 'first-sprint' ? { ...b, isUnlocked: true, unlockedAt: new Date().toISOString() } : b
-    );
+    // Clean start: all badges start locked
+    return INITIAL_BADGES.map((b) => ({ ...b, isUnlocked: false }));
   });
 
   const [newlyUnlockedBadge, setNewlyUnlockedBadge] = useState<Badge | null>(null);
@@ -167,7 +168,7 @@ export function useGamification() {
         correctQuestionsCount: prev.correctQuestionsCount + result.score,
         sprintsCompleted: prev.sprintsCompleted + 1,
         topicMastery: updatedTopicMastery,
-        history: [result, ...prev.history].slice(0, 30) // keep last 30 sprints
+        history: [result, ...prev.history].slice(0, 30)
       };
     });
 
@@ -176,7 +177,7 @@ export function useGamification() {
     if (result.score === result.totalQuestions) {
       unlockBadge('arithmetic-ace');
     }
-    if (result.timeSpentSeconds < 420) { // under 7 mins
+    if (result.timeSpentSeconds < 420) {
       unlockBadge('speed-demon');
     }
   }, [unlockBadge]);
@@ -198,7 +199,7 @@ export function useGamification() {
       history: []
     };
     setStats(fresh);
-    setBadges(INITIAL_BADGES);
+    setBadges(INITIAL_BADGES.map((b) => ({ ...b, isUnlocked: false })));
     localStorage.removeItem(STATS_STORAGE_KEY);
     localStorage.removeItem(BADGES_STORAGE_KEY);
   }, []);

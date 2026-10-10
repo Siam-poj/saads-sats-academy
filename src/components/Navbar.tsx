@@ -10,12 +10,15 @@ import {
   FileCheck,
   BarChart3,
   Moon,
-  Sun
+  Sun,
+  Divide,
+  Layers,
+  BookMarked
 } from 'lucide-react';
 import { UserStats } from '../types/curriculum';
 import { getLevelInfo } from '../hooks/useGamification';
 
-export type ActiveTab = 'sprint' | 'practice' | 'mock' | 'parent';
+export type ActiveTab = 'sprint' | 'maths' | 'spag' | 'reading' | 'mock' | 'parent';
 
 interface NavbarProps {
   stats: UserStats;
@@ -55,66 +58,96 @@ export const Navbar: React.FC<NavbarProps> = ({
                   Saad's <span className="text-indigo-600 dark:text-indigo-400">SATs</span> Academy
                 </span>
                 <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800">
-                  KS2 DfE
+                  Year 6 SATs
                 </span>
               </div>
               <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hidden sm:block">
-                Year 5 → Year 6 SATs Masterclass
+                KS2 National Curriculum Mastery
               </p>
             </div>
           </div>
 
           {/* Navigation Links (Desktop & Tablet) */}
-          <nav className="hidden md:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+          <nav className="hidden lg:flex items-center gap-1 bg-slate-100/80 dark:bg-slate-800/80 p-1.5 rounded-2xl border border-slate-200/60 dark:border-slate-700/60">
+            {/* Daily Sprint Tab */}
             <button
               onClick={() => onTabChange('sprint')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                 activeTab === 'sprint'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <Zap className={`w-4 h-4 ${activeTab === 'sprint' ? 'text-amber-500 fill-amber-500' : ''}`} />
-              <span>10-Min Sprint</span>
+              <Zap className={`w-4 h-4 ${activeTab === 'sprint' ? 'text-amber-500 fill-amber-500' : 'text-amber-500'}`} />
+              <span>Daily Sprint</span>
               <span className="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold">
-                Daily
+                10-Min
               </span>
             </button>
 
+            {/* Maths Tab */}
             <button
-              onClick={() => onTabChange('practice')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
-                activeTab === 'practice'
+              onClick={() => onTabChange('maths')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                activeTab === 'maths'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <BookOpen className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-              <span>Practice Arena</span>
+              <Divide className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              <span>Maths</span>
             </button>
 
+            {/* SPaG Tab */}
+            <button
+              onClick={() => onTabChange('spag')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                activeTab === 'spag'
+                  ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+              }`}
+            >
+              <Layers className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <span>SPaG</span>
+            </button>
+
+            {/* Reading Tab */}
+            <button
+              onClick={() => onTabChange('reading')}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                activeTab === 'reading'
+                  ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-sm'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
+              }`}
+            >
+              <BookMarked className="w-4 h-4 text-purple-600 dark:text-purple-400" />
+              <span>Reading</span>
+            </button>
+
+            {/* Mock Papers Tab */}
             <button
               onClick={() => onTabChange('mock')}
-              className={`flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                 activeTab === 'mock'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <FileCheck className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
+              <FileCheck className="w-4 h-4 text-sky-600 dark:text-sky-400" />
               <span>Mock Papers</span>
             </button>
 
+            {/* Parent Tab */}
             <button
               onClick={() => onTabChange('parent')}
-              className={`flex items-center gap-2 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                 activeTab === 'parent'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-sm'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
               <ShieldCheck className="w-4 h-4 text-slate-500 dark:text-slate-400" />
-              <span>Parent Portal</span>
+              <span>Parent</span>
             </button>
           </nav>
 
@@ -127,9 +160,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Flame className="w-4 h-4 text-orange-500 fill-orange-500 animate-bounce-short" />
               <span className="font-extrabold text-orange-700 dark:text-orange-400 text-xs sm:text-sm">
-                {stats.streakDays}
+                Day {stats.streakDays}
               </span>
-              <span className="text-[10px] text-orange-600 dark:text-orange-400 hidden sm:inline font-bold">days</span>
             </div>
 
             {/* Level & XP */}
@@ -177,11 +209,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Bottom Sub-nav Bar */}
-        <div className="md:hidden flex items-center justify-between border-t border-slate-200/60 dark:border-slate-800 py-2">
+        {/* Mobile / Tablet Horizontal Navigation Scrollbar */}
+        <div className="lg:hidden flex items-center justify-between border-t border-slate-200/60 dark:border-slate-800 py-2 overflow-x-auto gap-2">
           <button
             onClick={() => onTabChange('sprint')}
-            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold ${
+            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 ${
               activeTab === 'sprint' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'
             }`}
           >
@@ -189,30 +221,48 @@ export const Navbar: React.FC<NavbarProps> = ({
             <span>Sprint</span>
           </button>
           <button
-            onClick={() => onTabChange('practice')}
-            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold ${
-              activeTab === 'practice' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'
+            onClick={() => onTabChange('maths')}
+            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 ${
+              activeTab === 'maths' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'
             }`}
           >
-            <BookOpen className="w-4 h-4 mb-0.5" />
-            <span>Practice</span>
+            <Divide className="w-4 h-4 mb-0.5 text-emerald-500" />
+            <span>Maths</span>
+          </button>
+          <button
+            onClick={() => onTabChange('spag')}
+            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 ${
+              activeTab === 'spag' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'
+            }`}
+          >
+            <Layers className="w-4 h-4 mb-0.5 text-indigo-500" />
+            <span>SPaG</span>
+          </button>
+          <button
+            onClick={() => onTabChange('reading')}
+            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 ${
+              activeTab === 'reading' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'
+            }`}
+          >
+            <BookMarked className="w-4 h-4 mb-0.5 text-purple-500" />
+            <span>Reading</span>
           </button>
           <button
             onClick={() => onTabChange('mock')}
-            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold ${
+            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 ${
               activeTab === 'mock' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'
             }`}
           >
-            <FileCheck className="w-4 h-4 mb-0.5" />
+            <FileCheck className="w-4 h-4 mb-0.5 text-sky-500" />
             <span>Mock</span>
           </button>
           <button
             onClick={() => onTabChange('parent')}
-            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold ${
+            className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 ${
               activeTab === 'parent' ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-500 dark:text-slate-400'
             }`}
           >
-            <BarChart3 className="w-4 h-4 mb-0.5" />
+            <BarChart3 className="w-4 h-4 mb-0.5 text-slate-500" />
             <span>Parent</span>
           </button>
         </div>

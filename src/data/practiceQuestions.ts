@@ -1,7 +1,9 @@
 import { Question } from '../types/curriculum';
 
 export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
-  // Maths Reasoning
+  // ==========================================
+  // MATHS REASONING & ARITHMETIC
+  // ==========================================
   {
     id: 'reason-1',
     subject: 'maths-reasoning',
@@ -85,8 +87,165 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
       keyTakeaway: 'Whatever operation you do to one side of the equals sign, do exactly the same to the other side!'
     }
   },
+  {
+    id: 'maths-area-1',
+    subject: 'maths-reasoning',
+    topic: 'Angles, Perimeter, Area & Volume',
+    subtopic: 'Compound Area of Shapes',
+    difficulty: 'Silver',
+    title: 'Area of a Rectilinear Compound Shape',
+    prompt: 'A playground is made of two joined rectangles: Rectangle A measures 8m by 5m, and Rectangle B measures 4m by 3m. What is the total area of the playground?',
+    type: 'numeric',
+    correctAnswer: '52',
+    acceptableAlternatives: ['52', '52m²', '52 m2'],
+    unit: 'm²',
+    marks: 2,
+    hints: [
+      'Area of a rectangle = length × width.',
+      'Find the area of Rectangle A: 8 × 5.',
+      'Find the area of Rectangle B: 4 × 3.',
+      'Add the two areas together.'
+    ],
+    stepByStepExplanation: {
+      methodName: 'Compound Area Splitting',
+      steps: [
+        'Rectangle A: 8m × 5m = 40 m²',
+        'Rectangle B: 4m × 3m = 12 m²',
+        'Total area = 40 + 12 = 52 m²'
+      ],
+      keyTakeaway: 'Break composite rectilinear shapes into simple rectangles and sum their areas!'
+    }
+  },
+  {
+    id: 'maths-ratio-1',
+    subject: 'maths-reasoning',
+    topic: 'Algebra Basics & Ratio/Proportion',
+    subtopic: 'Scaling Recipes & Direct Proportion',
+    difficulty: 'Bronze',
+    title: 'Baking Recipe Ratio Scaling',
+    prompt: 'A flapjack recipe for 8 people needs 240g of rolled oats. Saad wants to make enough for 12 people. How many grams of oats does he need?',
+    type: 'numeric',
+    correctAnswer: '360',
+    acceptableAlternatives: ['360', '360g'],
+    unit: 'g',
+    marks: 2,
+    hints: [
+      'Find how much oats are needed for 1 person (unitary method): 240g ÷ 8.',
+      'Then multiply that answer by 12 people.'
+    ],
+    stepByStepExplanation: {
+      methodName: 'The Unitary Ratio Method',
+      steps: [
+        'Oats for 1 person: 240g ÷ 8 = 30g per person',
+        'Oats for 12 people: 30g × 12 = 360g'
+      ],
+      keyTakeaway: 'Always find the amount for 1 unit first (divide), then multiply by the new target!'
+    }
+  },
 
-  // Reading Comprehension
+  // ==========================================
+  // ENGLISH SPaG
+  // ==========================================
+  {
+    id: 'spag-relative-1',
+    subject: 'english-spag',
+    topic: 'Sentence Grammar',
+    subtopic: 'Relative Clauses',
+    difficulty: 'Silver',
+    title: 'Identifying Relative Pronouns',
+    prompt: 'Which relative pronoun correctly completes the sentence below?',
+    contextPassage: '"The Victorian engineer ________ designed the suspension bridge was Isambard Kingdom Brunel."',
+    type: 'multiple-choice',
+    options: [
+      { id: 'opt-1', label: 'which', isCorrect: false },
+      { id: 'opt-2', label: 'who', isCorrect: true },
+      { id: 'opt-3', label: 'where', isCorrect: false },
+      { id: 'opt-4', label: 'whose', isCorrect: false }
+    ],
+    correctAnswer: 'who',
+    marks: 1,
+    hints: [
+      'Brunel is a person, not an object or a place.',
+      'We use "who" for people, and "which" for objects or animals.'
+    ],
+    stepByStepExplanation: {
+      methodName: 'Relative Pronoun Selection Rule',
+      steps: [
+        'The antecedent is "The Victorian engineer" (a human person).',
+        'Use "who" when referring to people.',
+        '"which" is used for things and animals; "where" is used for locations.',
+        'Correct relative clause: "...who designed the suspension bridge..."'
+      ],
+      keyTakeaway: 'Use "who" for people and "which" or "that" for objects and animals!'
+    }
+  },
+  {
+    id: 'spag-parenthesis-1',
+    subject: 'english-spag',
+    topic: 'Punctuation',
+    subtopic: 'Parenthesis (Dashes, Brackets, Commas)',
+    difficulty: 'Bronze',
+    title: 'Recognising Punctuation for Parenthesis',
+    prompt: 'Which pair of punctuation marks is used to show parenthesis in the sentence below?',
+    contextPassage: '"Mount Everest – the highest mountain above sea level – attracts hundreds of climbers each spring."',
+    type: 'multiple-choice',
+    options: [
+      { id: 'opt-1', label: 'Hyphens', isCorrect: false },
+      { id: 'opt-2', label: 'Dashes', isCorrect: true },
+      { id: 'opt-3', label: 'Inverted commas', isCorrect: false },
+      { id: 'opt-4', label: 'Colons', isCorrect: false }
+    ],
+    correctAnswer: 'Dashes',
+    marks: 1,
+    hints: [
+      'Notice the longer lines with spaces around "the highest mountain above sea level".',
+      'Hyphens join words together (like sister-in-law); dashes separate parenthetical information.'
+    ],
+    stepByStepExplanation: {
+      methodName: 'Dash vs. Hyphen Identification',
+      steps: [
+        'A pair of dashes (– ... –) is used to insert extra parenthetical information that can be removed without breaking the sentence.',
+        'Hyphens (-) do not have spaces and join compound words.',
+        'Therefore, the marks used here are dashes.'
+      ],
+      keyTakeaway: 'Parenthesis can be marked with brackets ( ), commas , ,, or dashes – –!'
+    }
+  },
+  {
+    id: 'spag-spelling-2',
+    subject: 'english-spag',
+    topic: 'Statutory Spellings',
+    subtopic: 'Year 5/6 Statutory Word List',
+    difficulty: 'Gold',
+    title: 'Statutory Word: Necessary',
+    prompt: 'Which sentence uses the correct spelling of the statutory Year 5/6 word?',
+    type: 'multiple-choice',
+    options: [
+      { id: 'opt-1', label: 'It is neccessary to bring a waterproof coat.', isCorrect: false },
+      { id: 'opt-2', label: 'It is necessary to bring a waterproof coat.', isCorrect: true },
+      { id: 'opt-3', label: 'It is necessery to bring a waterproof coat.', isCorrect: false },
+      { id: 'opt-4', label: 'It is necesary to bring a waterproof coat.', isCorrect: false }
+    ],
+    correctAnswer: 'It is necessary to bring a waterproof coat.',
+    marks: 1,
+    hints: [
+      'Think of a shirt: 1 Collar and 2 Sleeves.',
+      'That means: 1 "c" and 2 "s"s!'
+    ],
+    stepByStepExplanation: {
+      methodName: 'Mnemonic: One Collar, Two Sleeves',
+      steps: [
+        'Mnemonic: Never forget that a shirt has 1 Collar (1 C) and 2 Sleeves (2 S’s).',
+        'n - e - c - e - s - s - a - r - y.',
+        'Correct statutory spelling: necessary.'
+      ],
+      keyTakeaway: '"Necessary" has one C and two S’s!'
+    }
+  },
+
+  // ==========================================
+  // ENGLISH READING COMPREHENSION
+  // ==========================================
   {
     id: 'reading-1',
     subject: 'english-reading',
@@ -149,6 +308,38 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
         'Therefore, Amir is nervous and anxious about going on stage.'
       ],
       keyTakeaway: 'Use surrounding character actions and body language to deduce the meaning of unfamiliar vocabulary!'
+    }
+  },
+  {
+    id: 'reading-3',
+    subject: 'english-reading',
+    topic: 'Reading: Retrieval & Inference',
+    subtopic: 'Authorial Technique & Atmosphere',
+    difficulty: 'Gold',
+    title: 'The Whispering Lighthouse - Author Intent',
+    prompt: 'How does the author create a sense of mystery and suspense in the opening sentence?',
+    contextPassage: '"The beam of the lighthouse swung across the jagged black rocks like a ghostly pendulum, illuminating for a fleeting second the silhouette of a vessel that should not have been there."',
+    type: 'multiple-choice',
+    options: [
+      { id: 'opt-1', label: 'By describing the happy cheerful sunshine over the ocean.', isCorrect: false },
+      { id: 'opt-2', label: 'By using eerie imagery ("ghostly pendulum", "jagged black rocks") and an unexpected silhouette.', isCorrect: true },
+      { id: 'opt-3', label: 'By explaining the technical mechanics of lighthouse lamps.', isCorrect: false },
+      { id: 'opt-4', label: 'By listing the names of all the sailors on board.', isCorrect: false }
+    ],
+    correctAnswer: 'By using eerie imagery ("ghostly pendulum", "jagged black rocks") and an unexpected silhouette.',
+    marks: 1,
+    hints: [
+      'Look at the figurative language: "like a ghostly pendulum".',
+      'Notice the sinister words: "jagged black rocks", "vessel that should not have been there".'
+    ],
+    stepByStepExplanation: {
+      methodName: 'Atmosphere and Figurative Language Analysis',
+      steps: [
+        'Simile: "like a ghostly pendulum" introduces an uncanny, supernatural tone.',
+        'Sensory detail: "jagged black rocks" hints at impending danger.',
+        'Foreshadowing: "a vessel that should not have been there" triggers tension and curiosity in the reader.'
+      ],
+      keyTakeaway: 'In Year 6 reading papers, look for figurative language (similes, metaphors) to explain how an author builds tension!'
     }
   }
 ];
