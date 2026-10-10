@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "deploy": "npm run build && cp dist/index.html dist/404.html && cd dist && git init && git config user.name 'Saad SATs' && git config user.email 'dev@saad-sats.local' && git add . && git commit -m 'Deploy' && git branch -M gh-pages && git remote add origin https://github.com/Siam-poj/saads-sats-academy.git && git push -u origin gh-pages --force && rm -rf .git && cd .."
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
