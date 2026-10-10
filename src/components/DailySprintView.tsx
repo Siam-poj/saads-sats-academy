@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import confetti from 'canvas-confetti';
 import {
   Timer,
@@ -17,10 +17,12 @@ import {
   ChevronRight,
   BookOpen,
   Sparkles,
-  Printer
+  Printer,
+  Award
 } from 'lucide-react';
 import { Question, SprintResult } from '../types/curriculum';
 import { SPRINT_SAMPLE_QUESTIONS } from '../data/sprintQuestions';
+import { PRACTICE_EXTRA_QUESTIONS } from '../data/practiceQuestions';
 import { ScratchpadCanvas } from './ScratchpadCanvas';
 import { MascotCompanion } from './MascotCompanion';
 import { PrintablePastPaperModal } from './PrintablePastPaperModal';
@@ -36,12 +38,14 @@ interface DailySprintViewProps {
     playFanfare: () => void;
     playTick: () => void;
   };
+  masteredQuestionIds?: string[];
 }
 
 export const DailySprintView: React.FC<DailySprintViewProps> = ({
   onSprintComplete,
   onGoToPractice,
-  playSound
+  playSound,
+  masteredQuestionIds = []
 }) => {
   const TOTAL_TIME = 600; // 10 minutes (600 seconds)
   const [timeLeft, setTimeLeft] = useState<number>(TOTAL_TIME);
@@ -71,8 +75,30 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
   const [isPrintModalOpen, setIsPrintModalOpen] = useState<boolean>(false);
 
   const timerRef = useRef<number | null>(null);
-  const questions = SPRINT_SAMPLE_QUESTIONS;
-  const currentQ = questions[currentIndex];
+
+  // Dynamic question selection: prioritise unmastered questions so Saad never repeats mastered ones
+  const questions = useMemo(() => {
+    const all = [...SPRINT_SAMPLE_QUESTIONS, ...PRACTICE_EXTRA_QUESTIONS];
+    const unmastered = all.filter((q) => !masteredQuestionIds.includes(q.id));
+    if (unmastered.length >= 10) {
+      const maths = unmastered.filter((q) => q.subject.includes('maths'));
+      const english = unmastered.filter((q) => q.subject.includes('english'));
+      const pickedMaths = maths.slice(0, 5);
+      const pickedEnglish = english.slice(0, 5);
+      const combined = [...pickedMaths, ...pickedEnglish];
+      if (combined.length === 10) return combined;
+      return unmastered.slice(0, 10);
+    } else if (unmastered.length > 0) {
+      const remainingNeeded = 10 - unmastered.length;
+      const padding = SPRINT_SAMPLE_QUESTIONS.filter(
+        (q) => !unmastered.some((u) => u.id === q.id)
+      ).slice(0, remainingNeeded);
+      return [...unmastered, ...padding];
+    }
+    return SPRINT_SAMPLE_QUESTIONS;
+  }, [masteredQuestionIds]);
+
+  const currentQ = questions[currentIndex] || questions[0];
 
   // Mascot feedback state
   const [mascotMood, setMascotMood] = useState<'greeting' | 'thinking' | 'correct' | 'incorrect' | 'streak'>('greeting');
@@ -702,6 +728,12 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
                 <span className="hidden sm:inline px-2 py-0.5 rounded-md text-[11px] font-semibold bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300">
                   {currentQ.topic}
                 </span>
+                {currentQ.satsPaperReference && (
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                    <Award className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                    <span>{currentQ.satsPaperReference}</span>
+                  </span>
+                )}
               </div>
               <span className="text-xs font-bold text-slate-400">{currentQ.marks} mark</span>
             </div>

@@ -35,14 +35,16 @@ interface SubjectPracticeViewProps {
     playLevelUp: () => void;
   };
   onAwardXp: (amount: number) => void;
-  onRecordAnswer?: (topic: string, isCorrect: boolean, xp: number) => void;
+  onRecordAnswer?: (questionId: string, topic: string, isCorrect: boolean, xp: number) => void;
+  masteredQuestionIds?: string[];
 }
 
 export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
   subjectType,
   playSound,
   onAwardXp,
-  onRecordAnswer
+  onRecordAnswer,
+  masteredQuestionIds = []
 }) => {
   const allQuestions = [...SPRINT_SAMPLE_QUESTIONS, ...PRACTICE_EXTRA_QUESTIONS];
 
@@ -60,9 +62,9 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
     return true;
   });
 
+  const [showMasteredReview, setShowMasteredReview] = useState<boolean>(false);
   const [selectedTopic, setSelectedTopic] = useState<string>('all');
   const [selectedDifficulty, setSelectedDifficulty] = useState<Difficulty | 'all'>('all');
-  const [activeQuestionId, setActiveQuestionId] = useState<string>(subjectQuestions[0]?.id || '');
   const [showScratchpad, setShowScratchpad] = useState<boolean>(subjectType === 'maths');
   const [selectedPrintPaperId, setSelectedPrintPaperId] = useState<string | null>(null);
 
@@ -77,16 +79,30 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
   // Unique topics for this subject
   const topics = Array.from(new Set(subjectQuestions.map((q) => q.topic)));
 
-  const filteredQuestions = subjectQuestions.filter((q) => {
+  // Filter unmastered questions (never show answered correctly again unless in review mode)
+  const unmasteredQuestions = subjectQuestions.filter(
+    (q) => !masteredQuestionIds.includes(q.id)
+  );
+  const masteredCount = subjectQuestions.filter((q) =>
+    masteredQuestionIds.includes(q.id)
+  ).length;
+
+  const currentPool = showMasteredReview ? subjectQuestions : unmasteredQuestions;
+
+  const filteredQuestions = currentPool.filter((q) => {
     if (selectedTopic !== 'all' && q.topic !== selectedTopic) return false;
     if (selectedDifficulty !== 'all' && q.difficulty !== selectedDifficulty) return false;
     return true;
   });
 
+  const [activeQuestionId, setActiveQuestionId] = useState<string>(
+    filteredQuestions[0]?.id || subjectQuestions[0]?.id || ''
+  );
+
   const activeQuestion =
-    subjectQuestions.find((q) => q.id === activeQuestionId) ||
+    filteredQuestions.find((q) => q.id === activeQuestionId) ||
     filteredQuestions[0] ||
-    subjectQuestions[0];
+    (showMasteredReview ? subjectQuestions[0] : null);
 
   const isSubmitted = activeQuestion ? submittedStatus[activeQuestion.id] : false;
   const isCorrect = activeQuestion ? correctnessStatus[activeQuestion.id] : false;
@@ -125,7 +141,7 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
     }
 
     if (onRecordAnswer) {
-      onRecordAnswer(activeQuestion.topic, correct, 20);
+      onRecordAnswer(activeQuestion.id, activeQuestion.topic, correct, 20);
     }
   };
 
@@ -191,6 +207,24 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
         </div>
 
         <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-slate-100 dark:bg-slate-800 text-xs font-bold text-slate-700 dark:text-slate-300">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            <span>Mastered: {masteredCount} / {subjectQuestions.length}</span>
+          </div>
+
+          {masteredCount > 0 && (
+            <button
+              onClick={() => setShowMasteredReview(!showMasteredReview)}
+              className={`px-3.5 py-2 rounded-2xl text-xs font-bold transition-all border ${
+                showMasteredReview
+                  ? 'bg-amber-500 text-white border-amber-600 shadow-sm'
+                  : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800'
+              }`}
+            >
+              {showMasteredReview ? 'Hide Mastered' : 'Review Mastered'}
+            </button>
+          )}
+
           {subjectPastPapers.length > 0 && (
             <button
               onClick={() => setSelectedPrintPaperId(subjectPastPapers[0].id)}
@@ -343,56 +377,74 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left List of Questions */}
         <div className="lg:col-span-4 space-y-2 max-h-[600px] overflow-y-auto pr-1">
-          {filteredQuestions.map((q) => {
-            const isSelected = q.id === activeQuestion?.id;
-            const sub = submittedStatus[q.id];
-            const corr = correctnessStatus[q.id];
+          {filteredQuestions.length === 0 ? (
+            <div className="p-6 rounded-2xl border border-dashed border-slate-300 dark:border-slate-700 text-center text-xs text-slate-500 dark:text-slate-400">
+              No unmastered questions remaining in this filter.
+            </div>
+          ) : (
+            filteredQuestions.map((q) => {
+              const isSelected = q.id === activeQuestion?.id;
+              const sub = submittedStatus[q.id];
+              const corr = correctnessStatus[q.id];
+              const isMastered = masteredQuestionIds.includes(q.id);
 
-            return (
-              <div
-                key={q.id}
-                onClick={() => {
-                  playSound.playClick();
-                  setActiveQuestionId(q.id);
-                }}
-                className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
-                  isSelected
-                    ? 'border-indigo-600 dark:border-indigo-500 bg-indigo-50/60 dark:bg-slate-800 shadow-xs'
-                    : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-850'
-                }`}
-              >
-                <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
-                    {q.topic}
-                  </span>
-                  <div className="flex items-center gap-1.5">
-                    <span
-                      className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
-                        q.difficulty === 'Gold'
-                          ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
-                          : q.difficulty === 'Silver'
-                          ? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
-                          : 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-400'
-                      }`}
-                    >
-                      {q.difficulty}
+              return (
+                <div
+                  key={q.id}
+                  onClick={() => {
+                    playSound.playClick();
+                    setActiveQuestionId(q.id);
+                  }}
+                  className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
+                    isSelected
+                      ? 'border-indigo-600 dark:border-indigo-500 bg-indigo-50/60 dark:bg-slate-800 shadow-xs'
+                      : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-850'
+                  }`}
+                >
+                  <div className="flex items-center justify-between gap-2 mb-1.5">
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400 truncate">
+                      {q.topic}
                     </span>
-                    {sub && (
-                      corr ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                      ) : (
-                        <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
-                      )
-                    )}
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      {isMastered && (
+                        <span className="text-[10px] font-bold px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300">
+                          Mastered
+                        </span>
+                      )}
+                      <span
+                        className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
+                          q.difficulty === 'Gold'
+                            ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
+                            : q.difficulty === 'Silver'
+                            ? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                            : 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-400'
+                        }`}
+                      >
+                        {q.difficulty}
+                      </span>
+                      {sub && (
+                        corr ? (
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                        ) : (
+                          <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
+                        )
+                      )}
+                    </div>
                   </div>
-                </div>
 
-                <div className="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 line-clamp-2">
-                  {q.title}
+                  <div className="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 line-clamp-2">
+                    {q.title}
+                  </div>
+                  {q.satsPaperReference && (
+                    <div className="text-[10px] text-slate-400 dark:text-slate-500 mt-1 flex items-center gap-1">
+                      <Award className="w-3 h-3 text-amber-500 flex-shrink-0" />
+                      <span className="truncate">{q.satsPaperReference}</span>
+                    </div>
+                  )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
         </div>
 
         {/* Center / Right: Question Card & Scratchpad */}
@@ -400,10 +452,22 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
           {activeQuestion ? (
             <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 relative transition-colors">
               <div className="flex items-center justify-between gap-2 mb-4">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-wrap">
                   <span className="px-2.5 py-1 rounded-xl text-xs font-black bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300">
                     {activeQuestion.topic}
                   </span>
+                  {activeQuestion.satsPaperReference && (
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-xl text-xs font-bold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800/60">
+                      <Award className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                      <span>{activeQuestion.satsPaperReference}</span>
+                    </span>
+                  )}
+                  {masteredQuestionIds.includes(activeQuestion.id) && (
+                    <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-lg text-[11px] font-bold bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                      <CheckCircle2 className="w-3 h-3 text-emerald-500" />
+                      <span>Mastered</span>
+                    </span>
+                  )}
                   <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
                     {activeQuestion.subtopic || activeQuestion.subject}
                   </span>
@@ -574,8 +638,37 @@ export const SubjectPracticeView: React.FC<SubjectPracticeViewProps> = ({
               )}
             </div>
           ) : (
-            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 text-center text-slate-400">
-              No questions found for this topic filter.
+            <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 text-center border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-4 border border-emerald-100 dark:border-emerald-900">
+                <Award className="w-8 h-8" />
+              </div>
+              <h3 className="text-xl font-extrabold text-slate-900 dark:text-white mb-2">
+                {masteredCount > 0 ? 'All Questions Mastered! 🎉' : 'No Questions Found'}
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-md mx-auto mb-6 leading-relaxed">
+                {masteredCount > 0
+                  ? `Brilliant work, Saad! You have correctly answered and mastered every question in this section (${masteredCount} of ${subjectQuestions.length} completed). As requested, mastered questions are retired so you will never see them repeated.`
+                  : 'No questions match the current filter. Try choosing another topic or difficulty.'}
+              </p>
+              <div className="flex items-center justify-center gap-3 flex-wrap">
+                {masteredCount > 0 && !showMasteredReview && (
+                  <button
+                    onClick={() => setShowMasteredReview(true)}
+                    className="px-4 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs rounded-xl shadow-sm transition-all active:scale-95"
+                  >
+                    Review Mastered Questions
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    setSelectedTopic('all');
+                    setSelectedDifficulty('all');
+                  }}
+                  className="px-4 py-2.5 border border-slate-300 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-bold text-xs rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-all active:scale-95"
+                >
+                  Clear Filters
+                </button>
+              </div>
             </div>
           )}
 

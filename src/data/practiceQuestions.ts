@@ -17,6 +17,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     acceptableAlternatives: ['8.85', '£8.85', '8.85p'],
     unit: '£',
     marks: 2,
+    satsPaperReference: '2024 KS2 SATs Paper 2: Reasoning Q7',
     hints: [
       'First calculate the total cost of the 3 notebooks: 3 × £2.45.',
       'Add the cost of the highlighters (£3.80) to find the grand total spent.',
@@ -45,6 +46,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     acceptableAlternatives: ['70', '70°', '70 degrees'],
     unit: '°',
     marks: 1,
+    satsPaperReference: '2023 KS2 SATs Paper 3: Reasoning Q14',
     hints: [
       'Angles in any triangle always add up to 180°.',
       'Subtract the given angle from 180°: 180° - 40° = 140°.',
@@ -72,6 +74,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     correctAnswer: '7',
     acceptableAlternatives: ['7', 'm=7'],
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs Paper 3: Reasoning Q19',
     hints: [
       'First isolate the term with m by subtracting 7 from both sides.',
       '35 - 7 = 28.',
@@ -100,6 +103,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     acceptableAlternatives: ['52', '52m²', '52 m2'],
     unit: 'm²',
     marks: 2,
+    satsPaperReference: '2023 KS2 SATs Paper 2: Reasoning Q16',
     hints: [
       'Area of a rectangle = length × width.',
       'Find the area of Rectangle A: 8 × 5.',
@@ -129,6 +133,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     acceptableAlternatives: ['360', '360g'],
     unit: 'g',
     marks: 2,
+    satsPaperReference: '2022 KS2 SATs Paper 3: Reasoning Q11',
     hints: [
       'Find how much oats are needed for 1 person (unitary method): 240g ÷ 8.',
       'Then multiply that answer by 12 people.'
@@ -164,6 +169,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'who',
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs SPaG Paper 1 Q19',
     hints: [
       'Brunel is a person, not an object or a place.',
       'We use "who" for people, and "which" for objects or animals.'
@@ -197,6 +203,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'Dashes',
     marks: 1,
+    satsPaperReference: '2023 KS2 SATs SPaG Paper 1 Q28',
     hints: [
       'Notice the longer lines with spaces around "the highest mountain above sea level".',
       'Hyphens join words together (like sister-in-law); dashes separate parenthetical information.'
@@ -228,6 +235,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'It is necessary to bring a waterproof coat.',
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs SPaG Paper 2 (Spelling) Q14',
     hints: [
       'Think of a shirt: 1 Collar and 2 Sleeves.',
       'That means: 1 "c" and 2 "s"s!'
@@ -240,6 +248,39 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
         'Correct statutory spelling: necessary.'
       ],
       keyTakeaway: '"Necessary" has one C and two S’s!'
+    }
+  },
+  {
+    id: 'spag-conjunction-1',
+    subject: 'english-spag',
+    topic: 'Sentence Grammar',
+    subtopic: 'Subordinating Conjunctions',
+    difficulty: 'Silver',
+    title: 'Subordinating Conjunction Identification',
+    prompt: 'Which word in the sentence below is a subordinating conjunction?',
+    contextPassage: '"Although it was freezing outside, the children continued to build their snowman enthusiastically."',
+    type: 'multiple-choice',
+    options: [
+      { id: 'opt-1', label: 'Although', isCorrect: true },
+      { id: 'opt-2', label: 'outside', isCorrect: false },
+      { id: 'opt-3', label: 'their', isCorrect: false },
+      { id: 'opt-4', label: 'enthusiastically', isCorrect: false }
+    ],
+    correctAnswer: 'Although',
+    marks: 1,
+    satsPaperReference: '2024 KS2 SATs SPaG Paper 1 Q31',
+    hints: [
+      'Look for the conjunction that introduces a subordinate clause (an incomplete thought on its own).',
+      'Remember the "ISAWAWABUB" mnemonic (If, Since, As, When, Although, While, After, Before, Until, Because).'
+    ],
+    stepByStepExplanation: {
+      methodName: 'Subordinating Conjunction Test',
+      steps: [
+        '"Although it was freezing outside" cannot stand alone as a complete sentence; it is a subordinate clause.',
+        '"Although" connects the subordinate clause to the main clause.',
+        'Therefore, "Although" is the subordinating conjunction.'
+      ],
+      keyTakeaway: 'Subordinating conjunctions link subordinate clauses to main clauses (e.g. although, because, since, while)!'
     }
   },
 
@@ -264,6 +305,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'In Thomas Farriner’s bakery on Pudding Lane',
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs Reading Paper Q4',
     hints: [
       'Scan the text for the words "bakery" or "Lane".',
       'The exact sentence mentions Thomas Farriner.'
@@ -296,6 +338,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'He was nervous and fearful of what might happen.',
     marks: 1,
+    satsPaperReference: '2023 KS2 SATs Reading Paper Q17',
     hints: [
       'Notice the clues around it: "clutching his script tightly", "palms were damp", "tremor in his voice".',
       'These are physical symptoms of anxiety or stage fright.'
@@ -328,6 +371,7 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'By using eerie imagery ("ghostly pendulum", "jagged black rocks") and an unexpected silhouette.',
     marks: 1,
+    satsPaperReference: '2022 KS2 SATs Reading Paper Q28',
     hints: [
       'Look at the figurative language: "like a ghostly pendulum".',
       'Notice the sinister words: "jagged black rocks", "vessel that should not have been there".'
@@ -340,6 +384,39 @@ export const PRACTICE_EXTRA_QUESTIONS: Question[] = [
         'Foreshadowing: "a vessel that should not have been there" triggers tension and curiosity in the reader.'
       ],
       keyTakeaway: 'In Year 6 reading papers, look for figurative language (similes, metaphors) to explain how an author builds tension!'
+    }
+  },
+  {
+    id: 'reading-4',
+    subject: 'english-reading',
+    topic: 'Reading: Retrieval & Inference',
+    subtopic: 'Authorial Vocabulary & Comparison',
+    difficulty: 'Silver',
+    title: 'The Lost Arctic Expedition',
+    prompt: 'Look at the sentence: "The pack ice groaned under colossal pressure, trapping the wooden hull in an unyielding vice." What does the phrase "unyielding vice" mean in this context?',
+    contextPassage: '"The pack ice groaned under colossal pressure, trapping the wooden hull in an unyielding vice. Captain Harris tapped the barometer with a furrowed brow; temperatures were plunging rapidly into the negatives."',
+    type: 'multiple-choice',
+    options: [
+      { id: 'opt-1', label: 'A loose, soft blanket of snow', isCorrect: false },
+      { id: 'opt-2', label: 'A rigid, unbreakable grip that would not let go', isCorrect: true },
+      { id: 'opt-3', label: 'A mechanical tool used by the ship carpenter', isCorrect: false },
+      { id: 'opt-4', label: 'A peaceful, calm winter harbour', isCorrect: false }
+    ],
+    correctAnswer: 'A rigid, unbreakable grip that would not let go',
+    marks: 1,
+    satsPaperReference: '2024 KS2 SATs Reading Paper Q12',
+    hints: [
+      'A vice is a workshop tool used to grip things tightly so they cannot move.',
+      '"Unyielding" means stubborn or refusing to bend or soften.'
+    ],
+    stepByStepExplanation: {
+      methodName: 'Metaphor Analysis',
+      steps: [
+        'The author compares the enclosing sea ice to a vice (a heavy clamp tool).',
+        '"Unyielding" means rigid, refusing to give way or soften.',
+        'Together, "unyielding vice" emphasizes the ship being trapped tightly and inescapably.'
+      ],
+      keyTakeaway: 'Metaphors compare one object to another to describe intensity or sensory experience without using "like" or "as"!'
     }
   }
 ];

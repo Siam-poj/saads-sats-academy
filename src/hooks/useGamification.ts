@@ -47,7 +47,10 @@ export function useGamification() {
         const parsed = JSON.parse(raw);
         // Ensure no old dummy mock values remain
         if (parsed && typeof parsed.xp === 'number') {
-          return parsed;
+          return {
+            ...parsed,
+            masteredQuestionIds: Array.isArray(parsed.masteredQuestionIds) ? parsed.masteredQuestionIds : []
+          };
         }
       } catch {
         // Fallback
@@ -65,7 +68,8 @@ export function useGamification() {
       sprintsCompleted: 0,
       badgesUnlocked: [],
       topicMastery: {},
-      history: []
+      history: [],
+      masteredQuestionIds: []
     };
   });
 
@@ -147,6 +151,14 @@ export function useGamification() {
       const newXp = prev.xp + result.xpEarned;
       const levelInfo = getLevelInfo(newXp);
 
+      // Collect IDs of correctly answered questions
+      const correctIds = result.answers
+        .filter((ans) => ans.isCorrect)
+        .map((ans) => ans.questionId);
+
+      const existingMastered = new Set(prev.masteredQuestionIds || []);
+      correctIds.forEach((id) => existingMastered.add(id));
+
       // Update topic masteries
       const updatedTopicMastery = { ...prev.topicMastery };
       result.answers.forEach((ans) => {
@@ -168,7 +180,8 @@ export function useGamification() {
         correctQuestionsCount: prev.correctQuestionsCount + result.score,
         sprintsCompleted: prev.sprintsCompleted + 1,
         topicMastery: updatedTopicMastery,
-        history: [result, ...prev.history].slice(0, 30)
+        history: [result, ...prev.history].slice(0, 30),
+        masteredQuestionIds: Array.from(existingMastered)
       };
     });
 
@@ -182,7 +195,7 @@ export function useGamification() {
     }
   }, [unlockBadge]);
 
-  const recordPracticeAnswer = useCallback((topic: string, isCorrect: boolean, xpAmount: number = 20) => {
+  const recordPracticeAnswer = useCallback((questionId: string, topic: string, isCorrect: boolean, xpAmount: number = 20) => {
     setStats((prev) => {
       const newXp = isCorrect ? prev.xp + xpAmount : prev.xp;
       const levelInfo = getLevelInfo(newXp);
@@ -197,13 +210,20 @@ export function useGamification() {
         updatedTopicMastery[topicKey].correct += 1;
       }
 
+      // Add to mastered questions if answered correctly
+      const existingMastered = new Set(prev.masteredQuestionIds || []);
+      if (isCorrect && questionId) {
+        existingMastered.add(questionId);
+      }
+
       return {
         ...prev,
         xp: newXp,
         level: levelInfo.level,
         completedQuestionsCount: prev.completedQuestionsCount + 1,
         correctQuestionsCount: isCorrect ? prev.correctQuestionsCount + 1 : prev.correctQuestionsCount,
-        topicMastery: updatedTopicMastery
+        topicMastery: updatedTopicMastery,
+        masteredQuestionIds: Array.from(existingMastered)
       };
     });
 
@@ -214,6 +234,13 @@ export function useGamification() {
       if (lower.includes('arithmetic') || lower.includes('multiplication')) unlockBadge('arithmetic-ace');
     }
   }, [unlockBadge]);
+
+  const resetMasteredQuestions = useCallback(() => {
+    setStats((prev) => ({
+      ...prev,
+      masteredQuestionIds: []
+    }));
+  }, []);
 
   const levelInfo = getLevelInfo(stats.xp);
 
@@ -229,7 +256,8 @@ export function useGamification() {
       sprintsCompleted: 0,
       badgesUnlocked: [],
       topicMastery: {},
-      history: []
+      history: [],
+      masteredQuestionIds: []
     };
     setStats(fresh);
     setBadges(INITIAL_BADGES.map((b) => ({ ...b, isUnlocked: false })));
@@ -246,6 +274,7 @@ export function useGamification() {
     unlockBadge,
     recordSprintCompletion,
     recordPracticeAnswer,
+    resetMasteredQuestions,
     resetAllProgress
   };
 }

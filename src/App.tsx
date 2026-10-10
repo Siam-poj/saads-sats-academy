@@ -22,6 +22,7 @@ export function App() {
     badges,
     recordSprintCompletion,
     recordPracticeAnswer,
+    resetMasteredQuestions,
     resetAllProgress,
   } = useGamification();
 
@@ -35,6 +36,8 @@ export function App() {
     playFanfare,
     playTick
   } = useSound();
+
+  const masteredQuestionIds = stats.masteredQuestionIds || [];
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-150">
@@ -58,6 +61,7 @@ export function App() {
           <DailySprintView
             onSprintComplete={recordSprintCompletion}
             onGoToPractice={() => setActiveTab('maths')}
+            masteredQuestionIds={masteredQuestionIds}
             playSound={{
               playCorrect,
               playIncorrect,
@@ -73,6 +77,7 @@ export function App() {
         {activeTab === 'maths' && (
           <SubjectPracticeView
             subjectType="maths"
+            masteredQuestionIds={masteredQuestionIds}
             playSound={{
               playCorrect,
               playIncorrect,
@@ -88,6 +93,7 @@ export function App() {
         {activeTab === 'spag' && (
           <SubjectPracticeView
             subjectType="spag"
+            masteredQuestionIds={masteredQuestionIds}
             playSound={{
               playCorrect,
               playIncorrect,
@@ -103,6 +109,7 @@ export function App() {
         {activeTab === 'reading' && (
           <SubjectPracticeView
             subjectType="reading"
+            masteredQuestionIds={masteredQuestionIds}
             playSound={{
               playCorrect,
               playIncorrect,
@@ -130,6 +137,7 @@ export function App() {
           <ParentDashboardView
             stats={stats}
             onResetProgress={resetAllProgress}
+            onResetMasteredQuestions={resetMasteredQuestions}
           />
         )}
       </main>

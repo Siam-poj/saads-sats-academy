@@ -17,6 +17,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     correctAnswer: '11.25',
     acceptableAlternatives: ['11.25', '11.250'],
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs Paper 1: Arithmetic Q14',
     hints: [
       'Line up the decimal points directly underneath each other.',
       'Remember that 7.8 is the same as 7.80. Add a placeholder zero to avoid place value confusion!',
@@ -47,6 +48,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     correctAnswer: '10464',
     acceptableAlternatives: ['10464', '10,464'],
     marks: 2,
+    satsPaperReference: '2023 KS2 SATs Paper 1: Arithmetic Q32',
     hints: [
       'Break 24 into 20 and 4. First multiply 436 by 4.',
       'Before multiplying by 2 (the tens digit), remember to put down the placeholder zero (0)!',
@@ -81,6 +83,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     ],
     correctAnswer: '3/10',
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs Paper 1: Arithmetic Q27',
     hints: [
       'When multiplying fractions, multiply straight across: numerator × numerator, and denominator × denominator.',
       '3 × 2 = 6, and 4 × 5 = 20. That gives 6/20.',
@@ -110,6 +113,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     correctAnswer: '636',
     acceptableAlternatives: ['636'],
     marks: 1,
+    satsPaperReference: '2023 KS2 SATs Paper 1: Arithmetic Q19',
     hints: [
       'Set up the bus stop: 6 on the outside, 3816 inside.',
       'How many 6s go into 3? (0, carry 3 to make 38). How many 6s in 38? (6 remainder 2).',
@@ -140,6 +144,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     correctAnswer: '147',
     acceptableAlternatives: ['147'],
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs Paper 1: Arithmetic Q35',
     hints: [
       'Deconstruct 35% into easier building blocks: (10% × 3) + 5%.',
       'To find 10% of 420, divide by 10 = 42.',
@@ -179,6 +184,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'might',
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs SPaG Paper 1 Q12',
     hints: [
       'Modal verbs are helper verbs that show possibility, necessity, or permission (e.g. can, could, may, might, must, should, would).',
       'Look for the word that tells us if the snow is possible rather than definite.'
@@ -227,6 +233,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'The train was delayed; we arrived just in time for the ceremony.',
     marks: 1,
+    satsPaperReference: '2023 KS2 SATs SPaG Paper 1 Q38',
     hints: [
       'A semi-colon joins two complete independent clauses that could each stand alone as their own sentence.',
       'Check if both sides of the semi-colon make a complete sentence on their own without a coordinating conjunction (like and/but).'
@@ -275,6 +282,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'The ancient scroll was discovered by the explorer.',
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs SPaG Paper 1 Q26',
     hints: [
       'In active voice, the subject performs the action (e.g., "The cat chased the mouse").',
       'In passive voice, the subject receives the action, often with a form of the verb "to be" + past participle and often followed by "by..." (e.g., "The mouse was chased by the cat").'
@@ -323,6 +331,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'If I were the Prime Minister, I would increase the science budget.',
     marks: 1,
+    satsPaperReference: '2023 KS2 SATs SPaG Paper 1 Q42',
     hints: [
       'The subjunctive form is used for hypothetical conditions (things that are not actually true) or formal demands.',
       'In standard KS2 English, we use "were" instead of "was" with "I", "he", and "she" in hypothetical "If..." statements.'
@@ -370,6 +379,7 @@ export const SPRINT_SAMPLE_QUESTIONS: Question[] = [
     ],
     correctAnswer: 'The hotel was able to accommodate all thirty students.',
     marks: 1,
+    satsPaperReference: '2024 KS2 SATs SPaG Paper 2 (Spelling) Q15',
     hints: [
       'This tricky word has double "c" and double "m".',
       'Mnemonic tip: "A double Coach with double Music can ACCOMMODATE everyone!"'

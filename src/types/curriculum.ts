@@ -25,6 +25,7 @@ export interface Question {
   unit?: string; // E.g. "cm²", "%", "marks"
   marks: number;
   hints: string[]; // Progressive Socratic hints
+  satsPaperReference?: string; // E.g. "2024 SATs Paper 1 Q16" or "2023 Paper 2 Reasoning Q4"
   stepByStepExplanation: {
     methodName: string;
     steps: string[];
@@ -58,6 +59,7 @@ export interface UserStats {
   badgesUnlocked: string[];
   topicMastery: Record<string, { total: number; correct: number }>;
   history: SprintResult[];
+  masteredQuestionIds?: string[]; // IDs of questions Saad has answered correctly (never shown again)
 }
 
 export interface Badge {
