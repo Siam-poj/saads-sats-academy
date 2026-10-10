@@ -1,0 +1,22 @@
+{
+  "name": "Saad's SATs Academy",
+  "short_name": "Saad's SATs",
+  "description": "Interactive Year 6 KS2 SATs Revision with Daily Sprint & Working Scratchpad",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4f46e5",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/logo-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
