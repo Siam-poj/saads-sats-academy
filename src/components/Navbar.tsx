@@ -12,7 +12,8 @@ import {
   Divide,
   Layers,
   BookMarked,
-  Sparkles
+  Sparkles,
+  Printer
 } from 'lucide-react';
 import { UserStats } from '../types/curriculum';
 import { getLevelInfo } from '../hooks/useGamification';
@@ -28,6 +29,7 @@ interface NavbarProps {
   onOpenBadges: () => void;
   isDark: boolean;
   onToggleTheme: () => void;
+  onOpenPrintModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -38,123 +40,136 @@ export const Navbar: React.FC<NavbarProps> = ({
   onToggleSound,
   onOpenBadges,
   isDark,
-  onToggleTheme
+  onToggleTheme,
+  onOpenPrintModal
 }) => {
   const levelInfo = getLevelInfo(stats.xp);
 
   return (
-    <header className="sticky top-0 z-30 bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-xs transition-colors duration-150">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-18 gap-2 sm:gap-4">
+    <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 border-b border-slate-200 dark:border-slate-800 shadow-2xs transition-colors duration-150">
+      <div className="w-full max-w-[1720px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 sm:h-18 gap-2 sm:gap-6">
           {/* Brand Logo & Title */}
           <div
-            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none"
+            className="flex items-center gap-2.5 sm:gap-3 cursor-pointer select-none flex-shrink-0"
             onClick={() => onTabChange('sprint')}
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center shadow-md text-white font-black text-xl">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-500 flex items-center justify-center shadow-md text-white font-black text-xl flex-shrink-0">
               <span className="transform -rotate-6">S</span>
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight">
+                <span className="font-extrabold text-base sm:text-lg text-slate-900 dark:text-white tracking-tight whitespace-nowrap">
                   Saad's <span className="text-indigo-600 dark:text-indigo-400">SATs</span> Academy
                 </span>
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800">
+                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 border border-indigo-200/50 dark:border-indigo-800 whitespace-nowrap">
                   Year 6
                 </span>
               </div>
-              <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hidden sm:block">
+              <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400 hidden sm:block whitespace-nowrap">
                 KS2 National Curriculum
               </p>
             </div>
           </div>
 
-          {/* Navigation Tabs (Desktop & Tablet) */}
-          <nav className="hidden lg:flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-1 rounded-2xl border border-slate-200/80 dark:border-slate-700/80">
+          {/* Navigation Tabs (Desktop & Tablet) - All on 1 Clean Line */}
+          <nav className="hidden lg:flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200/80 dark:border-slate-700/80">
             {/* Daily Sprint */}
             <button
               onClick={() => onTabChange('sprint')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'sprint'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <Zap className="w-4 h-4 text-amber-500 fill-amber-500" />
-              <span>Daily Sprint</span>
-              <span className="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[10px] px-1.5 py-0.2 rounded-full font-bold">
-                10-Min
+              <Zap className="w-4 h-4 text-amber-500 fill-amber-500 flex-shrink-0" />
+              <span className="whitespace-nowrap">Daily Sprint</span>
+              <span className="bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300 text-[10px] px-1.5 py-0.5 rounded-md font-bold whitespace-nowrap ml-0.5">
+                10m
               </span>
             </button>
 
             {/* Maths */}
             <button
               onClick={() => onTabChange('maths')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'maths'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <Divide className="w-4 h-4 text-emerald-500" />
-              <span>Maths</span>
+              <Divide className="w-4 h-4 text-emerald-500 flex-shrink-0" />
+              <span className="whitespace-nowrap">Maths</span>
             </button>
 
             {/* SPaG */}
             <button
               onClick={() => onTabChange('spag')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'spag'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <Layers className="w-4 h-4 text-indigo-500" />
-              <span>SPaG</span>
+              <Layers className="w-4 h-4 text-indigo-500 flex-shrink-0" />
+              <span className="whitespace-nowrap">SPaG</span>
             </button>
 
             {/* Reading */}
             <button
               onClick={() => onTabChange('reading')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'reading'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <BookMarked className="w-4 h-4 text-purple-500" />
-              <span>Reading</span>
+              <BookMarked className="w-4 h-4 text-purple-500 flex-shrink-0" />
+              <span className="whitespace-nowrap">Reading</span>
             </button>
 
             {/* Mock Papers */}
             <button
               onClick={() => onTabChange('mock')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'mock'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <FileCheck className="w-4 h-4 text-sky-500" />
-              <span>Mock Papers</span>
+              <FileCheck className="w-4 h-4 text-sky-500 flex-shrink-0" />
+              <span className="whitespace-nowrap">Mock Papers</span>
             </button>
+
+            {/* Printable Past Papers Action */}
+            {onOpenPrintModal && (
+              <button
+                onClick={onOpenPrintModal}
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap text-emerald-700 dark:text-emerald-300 hover:bg-emerald-100/60 dark:hover:bg-emerald-950/50"
+                title="Print official KS2 SATs past papers and mark schemes"
+              >
+                <Printer className="w-4 h-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
+                <span className="whitespace-nowrap">Print Past Papers</span>
+              </button>
+            )}
 
             {/* Parent */}
             <button
               onClick={() => onTabChange('parent')}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
                 activeTab === 'parent'
                   ? 'bg-white dark:bg-slate-900 text-indigo-700 dark:text-indigo-300 shadow-xs'
                   : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-slate-700/50'
               }`}
             >
-              <ShieldCheck className="w-4 h-4 text-slate-400" />
-              <span>Parent</span>
+              <ShieldCheck className="w-4 h-4 text-slate-400 flex-shrink-0" />
+              <span className="whitespace-nowrap">Parent</span>
             </button>
           </nav>
 
           {/* Gamification Stats: Streak, Level & XP, Theme & Audio Controls */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="flex items-center gap-2 sm:gap-2.5 flex-shrink-0">
             {/* Streak Counter (Clean Day 1) */}
             <div
               className="flex items-center gap-1.5 bg-orange-50 dark:bg-orange-950/40 border border-orange-200 dark:border-orange-900/60 px-2.5 py-1.5 rounded-xl shadow-2xs"
@@ -267,6 +282,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             <FileCheck className="w-4 h-4 mb-0.5 text-sky-500" />
             <span>Mock</span>
           </button>
+          {onOpenPrintModal && (
+            <button
+              onClick={onOpenPrintModal}
+              className="flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 text-emerald-600 dark:text-emerald-400"
+            >
+              <Printer className="w-4 h-4 mb-0.5 text-emerald-500" />
+              <span>Print</span>
+            </button>
+          )}
           <button
             onClick={() => onTabChange('parent')}
             className={`flex-1 flex flex-col items-center py-1 text-[11px] font-semibold whitespace-nowrap px-2 ${

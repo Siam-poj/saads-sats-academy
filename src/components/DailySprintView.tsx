@@ -16,12 +16,14 @@ import {
   Flame,
   ChevronRight,
   BookOpen,
-  Sparkles
+  Sparkles,
+  Printer
 } from 'lucide-react';
 import { Question, SprintResult } from '../types/curriculum';
 import { SPRINT_SAMPLE_QUESTIONS } from '../data/sprintQuestions';
 import { ScratchpadCanvas } from './ScratchpadCanvas';
 import { MascotCompanion } from './MascotCompanion';
+import { PrintablePastPaperModal } from './PrintablePastPaperModal';
 
 interface DailySprintViewProps {
   onSprintComplete: (result: SprintResult) => void;
@@ -66,6 +68,7 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
   // Finished state
   const [isFinished, setIsFinished] = useState<boolean>(false);
   const [finalResult, setFinalResult] = useState<SprintResult | null>(null);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState<boolean>(false);
 
   const timerRef = useRef<number | null>(null);
   const questions = SPRINT_SAMPLE_QUESTIONS;
@@ -253,7 +256,7 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
   // Pre-Start Banner View
   if (!hasStarted) {
     return (
-      <div className="max-w-4xl mx-auto py-6 sm:py-10 px-4">
+      <div className="w-full max-w-[1680px] mx-auto py-6 sm:py-8 px-4 sm:px-6 lg:px-8">
         <div className="bg-gradient-to-br from-indigo-900 via-indigo-800 to-indigo-950 dark:from-indigo-950 dark:via-slate-900 dark:to-slate-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden border border-indigo-500/20">
           <div className="relative z-10 flex flex-col md:flex-row items-center gap-8 justify-between">
             <div className="flex-1 text-center md:text-left">
@@ -322,6 +325,98 @@ export const DailySprintView: React.FC<DailySprintViewProps> = ({
             </div>
           </div>
         </div>
+
+        {/* Dedicated Curriculum Modules & Printable Past Papers Grid */}
+        <div className="mt-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h2 className="text-lg font-extrabold text-slate-900 dark:text-white">
+                Core KS2 Year 6 Curriculum Hub
+              </h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Jump into targeted subject practice or print official exam papers.
+              </p>
+            </div>
+            <button
+              onClick={() => setIsPrintModalOpen(true)}
+              className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 font-bold text-xs rounded-xl hover:bg-emerald-200 dark:hover:bg-emerald-900 transition-colors"
+            >
+              <Printer className="w-3.5 h-3.5" />
+              <span>Print Past Papers (A4 / PDF)</span>
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div
+              onClick={onGoToPractice}
+              className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md cursor-pointer transition-all hover:-translate-y-0.5 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-lg mb-3">
+                ➗
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                Mathematics
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Paper 1 Arithmetic & Papers 2/3 Reasoning with interactive squared scratchpad.
+              </p>
+            </div>
+
+            <div
+              onClick={onGoToPractice}
+              className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md cursor-pointer transition-all hover:-translate-y-0.5 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-indigo-100 dark:bg-indigo-950 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-lg mb-3">
+                📖
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                English SPaG
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Word classes, complex punctuation, and statutory Year 5/6 spellings.
+              </p>
+            </div>
+
+            <div
+              onClick={onGoToPractice}
+              className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md cursor-pointer transition-all hover:-translate-y-0.5 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-950 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold text-lg mb-3">
+                📚
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                Reading Comprehension
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Engaging narrative and non-fiction stories with official SATs question stems.
+              </p>
+            </div>
+
+            <div
+              onClick={() => setIsPrintModalOpen(true)}
+              className="p-5 rounded-2xl bg-emerald-50/70 dark:bg-slate-900 border border-emerald-200/80 dark:border-slate-800 shadow-2xs hover:shadow-md cursor-pointer transition-all hover:-translate-y-0.5 group"
+            >
+              <div className="w-10 h-10 rounded-xl bg-emerald-600 text-white flex items-center justify-center font-bold text-lg mb-3 shadow-xs">
+                <Printer className="w-5 h-5" />
+              </div>
+              <h3 className="font-extrabold text-slate-900 dark:text-white text-sm group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors flex items-center justify-between">
+                <span>Print Past Papers</span>
+                <span className="text-[10px] bg-emerald-200/80 dark:bg-emerald-950 text-emerald-900 dark:text-emerald-300 px-1.5 py-0.5 rounded font-bold">
+                  PDF / A4
+                </span>
+              </h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Print authentic Key Stage 2 SATs booklets with answer boxes and mark schemes.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Printable Past Papers Modal */}
+        <PrintablePastPaperModal
+          isOpen={isPrintModalOpen}
+          onClose={() => setIsPrintModalOpen(false)}
+        />
       </div>
     );
   }

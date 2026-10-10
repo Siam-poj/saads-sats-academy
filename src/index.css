@@ -43,3 +43,60 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* Official SATs Print Styles */
+@media print {
+  @page {
+    size: A4;
+    margin: 12mm 15mm 15mm 15mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Hide everything on screen except the print target */
+  body > * {
+    display: none !important;
+  }
+
+  body > #root {
+    display: block !important;
+  }
+
+  #root > * {
+    display: none !important;
+  }
+
+  .print-only-container {
+    display: block !important;
+    position: static !important;
+    width: 100% !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .page-break-before {
+    page-break-before: always;
+    break-before: page;
+  }
+
+  .avoid-break-inside {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  .sats-grid-paper {
+    background-image: linear-gradient(to right, #cbd5e1 1px, transparent 1px),
+      linear-gradient(to bottom, #cbd5e1 1px, transparent 1px);
+    background-size: 8mm 8mm;
+  }
+}

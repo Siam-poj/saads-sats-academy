@@ -9,11 +9,13 @@ import {
   AlertCircle,
   HelpCircle,
   Flag,
-  PenTool
+  PenTool,
+  Printer
 } from 'lucide-react';
 import { Question } from '../types/curriculum';
 import { SPRINT_SAMPLE_QUESTIONS } from '../data/sprintQuestions';
 import { ScratchpadCanvas } from './ScratchpadCanvas';
+import { PrintablePastPaperModal } from './PrintablePastPaperModal';
 
 interface MockExamSimulatorViewProps {
   playSound: {
@@ -88,6 +90,7 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
   const [examAnswers, setExamAnswers] = useState<Record<string, string>>({});
   const [flaggedQuestions, setFlaggedQuestions] = useState<Record<string, boolean>>({});
   const [isExamSubmitted, setIsExamSubmitted] = useState<boolean>(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState<boolean>(false);
 
   const mockQuestions = SPRINT_SAMPLE_QUESTIONS;
   const currentQ = mockQuestions[currentExamIndex];
@@ -177,7 +180,7 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
             </ul>
           </div>
 
-          <div className="text-center">
+          <div className="flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={handleStartExam}
               className="px-8 py-3.5 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold text-sm shadow-md transition-transform hover:scale-105 active:scale-95 inline-flex items-center gap-2"
@@ -185,7 +188,19 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
               <Play className="w-4 h-4 fill-white" />
               <span>Begin Official Mock Paper</span>
             </button>
+            <button
+              onClick={() => setIsPrintModalOpen(true)}
+              className="px-6 py-3.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-extrabold text-sm shadow-md transition-transform hover:scale-105 active:scale-95 inline-flex items-center gap-2"
+            >
+              <Printer className="w-4 h-4" />
+              <span>Print This Paper & Mark Scheme</span>
+            </button>
           </div>
+
+          <PrintablePastPaperModal
+            isOpen={isPrintModalOpen}
+            onClose={() => setIsPrintModalOpen(false)}
+          />
         </div>
       </div>
     );
