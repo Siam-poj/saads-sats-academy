@@ -47,9 +47,9 @@ export const PrintablePastPaperModal: React.FC<PrintablePastPaperModalProps> = (
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 animate-fadeIn">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 animate-fadeIn print:static print:inset-auto print:p-0 print:m-0 print:bg-white print:block print:w-full print:h-auto">
       {/* Container - on print this becomes full document */}
-      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-5xl w-full h-[92vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl max-w-5xl w-full h-[92vh] flex flex-col shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden transition-colors print:static print:h-auto print:max-h-none print:w-full print:max-w-none print:shadow-none print:border-none print:overflow-visible print:rounded-none">
         
         {/* Modal Top Control Bar (Screen only, hidden on print) */}
         <div className="no-print p-4 sm:p-5 border-b border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/80 flex flex-wrap items-center justify-between gap-3">
@@ -151,9 +151,12 @@ export const PrintablePastPaperModal: React.FC<PrintablePastPaperModalProps> = (
         </div>
 
         {/* Printable Paper Document (Scrollable on screen, Paginated on print) */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-slate-100 dark:bg-slate-950 print:bg-white print:p-0 print:overflow-visible">
+        <div className="flex-1 overflow-y-auto p-4 sm:p-8 bg-slate-100 dark:bg-slate-950 print:bg-white print:p-0 print:overflow-visible print:h-auto print:w-full print:block print:m-0">
           
-          <div className="print-only-container max-w-4xl mx-auto bg-white text-slate-950 p-8 sm:p-12 rounded-2xl shadow-md border border-slate-200 print:shadow-none print:border-none print:p-0">
+          <div
+            id="sats-print-paper-content"
+            className="max-w-4xl mx-auto bg-white text-slate-950 p-8 sm:p-12 rounded-2xl shadow-md border border-slate-200 print:shadow-none print:border-none print:p-0 print:max-w-none print:w-full print:block print:m-0"
+          >
             
             {/* =================================================== */}
             {/* MODE 1: PUPIL EXAM BOOKLET                          */}
