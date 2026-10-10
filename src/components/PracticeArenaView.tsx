@@ -15,7 +15,6 @@ import { Question, Subject, Difficulty } from '../types/curriculum';
 import { SPRINT_SAMPLE_QUESTIONS } from '../data/sprintQuestions';
 import { PRACTICE_EXTRA_QUESTIONS } from '../data/practiceQuestions';
 import { ScratchpadCanvas } from './ScratchpadCanvas';
-import { MascotCompanion } from './MascotCompanion';
 
 interface PracticeArenaViewProps {
   playSound: {
@@ -118,16 +117,16 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
   return (
     <div className="max-w-7xl mx-auto py-6 px-4">
       {/* Header Banner */}
-      <div className="bg-white rounded-3xl p-6 shadow-sm border border-slate-200 mb-6 flex flex-col md:flex-row items-center justify-between gap-4">
+      <div className="bg-white dark:bg-slate-900 rounded-3xl p-6 shadow-sm border border-slate-200 dark:border-slate-800 mb-6 flex flex-col md:flex-row items-center justify-between gap-4 transition-colors">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-700 text-xs font-bold uppercase tracking-wide mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 text-xs font-bold uppercase tracking-wide mb-2">
             <BookOpen className="w-3.5 h-3.5" />
             <span>Self-Paced Practice Arena</span>
           </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
             Master Every KS2 SATs Topic
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Filter by paper, topic, and difficulty. Use the working pad and Socratic hints at your own pace!
           </p>
         </div>
@@ -138,7 +137,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
             className={`px-4 py-2 rounded-2xl text-xs font-bold flex items-center gap-2 border transition-all ${
               showScratchpad
                 ? 'bg-indigo-600 text-white border-indigo-700 shadow-sm'
-                : 'bg-slate-100 text-slate-700 border-slate-200 hover:bg-slate-200'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             <PenTool className="w-4 h-4" />
@@ -148,15 +147,14 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
       </div>
 
       {/* Filter Toolbar */}
-      <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center justify-between gap-3 text-xs">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl p-4 shadow-sm border border-slate-200 dark:border-slate-800 mb-6 flex flex-wrap items-center justify-between gap-3 text-xs transition-colors">
         <div className="flex flex-wrap items-center gap-2">
-          {/* Subject Pills */}
           <button
             onClick={() => setSelectedSubject('all')}
             className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
               selectedSubject === 'all'
                 ? 'bg-indigo-600 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             All Subjects
@@ -166,7 +164,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
             className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
               selectedSubject === 'maths-arithmetic'
                 ? 'bg-indigo-600 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             Maths Arithmetic
@@ -176,7 +174,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
             className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
               selectedSubject === 'maths-reasoning'
                 ? 'bg-indigo-600 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             Maths Reasoning
@@ -186,7 +184,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
             className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
               selectedSubject === 'english-spag'
                 ? 'bg-indigo-600 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             English SPaG
@@ -196,7 +194,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
             className={`px-3 py-1.5 rounded-xl font-bold transition-colors ${
               selectedSubject === 'english-reading'
                 ? 'bg-indigo-600 text-white'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
             }`}
           >
             Reading
@@ -219,7 +217,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                     : diff === 'Bronze'
                     ? 'bg-amber-800 text-white'
                     : 'bg-indigo-600 text-white'
-                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
               }`}
             >
               {diff}
@@ -228,11 +226,11 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
         </div>
       </div>
 
-      {/* Main Workspace Layout: List Sidebar + Active Card + Scratchpad */}
+      {/* Main Workspace Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Left List of Questions */}
         <div className="lg:col-span-4 space-y-2 max-h-[600px] overflow-y-auto pr-1">
-          {filteredQuestions.map((q, idx) => {
+          {filteredQuestions.map((q) => {
             const isSelected = q.id === activeQuestion.id;
             const sub = submittedStatus[q.id];
             const corr = correctnessStatus[q.id];
@@ -246,37 +244,37 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                 }}
                 className={`p-3.5 rounded-2xl border cursor-pointer transition-all ${
                   isSelected
-                    ? 'border-indigo-600 bg-indigo-50/60 shadow-xs'
-                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50'
+                    ? 'border-indigo-600 dark:border-indigo-500 bg-indigo-50/60 dark:bg-slate-800 shadow-xs'
+                    : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-850'
                 }`}
               >
                 <div className="flex items-center justify-between gap-2 mb-1.5">
-                  <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-700">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-700 dark:text-indigo-400">
                     {q.topic}
                   </span>
                   <div className="flex items-center gap-1.5">
                     <span
                       className={`text-[10px] font-bold px-1.5 py-0.5 rounded ${
                         q.difficulty === 'Gold'
-                          ? 'bg-amber-100 text-amber-800'
+                          ? 'bg-amber-100 dark:bg-amber-950 text-amber-800 dark:text-amber-300'
                           : q.difficulty === 'Silver'
-                          ? 'bg-slate-100 text-slate-700'
-                          : 'bg-amber-50 text-amber-900'
+                          ? 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'
+                          : 'bg-amber-50 dark:bg-amber-950/40 text-amber-900 dark:text-amber-400'
                       }`}
                     >
                       {q.difficulty}
                     </span>
                     {sub && (
                       corr ? (
-                        <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                       ) : (
-                        <XCircle className="w-4 h-4 text-rose-600" />
+                        <XCircle className="w-4 h-4 text-rose-600 dark:text-rose-400" />
                       )
                     )}
                   </div>
                 </div>
 
-                <div className="font-semibold text-xs sm:text-sm text-slate-800 line-clamp-2">
+                <div className="font-semibold text-xs sm:text-sm text-slate-800 dark:text-slate-200 line-clamp-2">
                   {q.title}
                 </div>
               </div>
@@ -287,29 +285,29 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
         {/* Center / Right: Question Arena + Scratchpad */}
         <div className={`lg:col-span-8 space-y-4`}>
           {/* Active Question Card */}
-          <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 relative">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 relative transition-colors">
             <div className="flex items-center justify-between gap-2 mb-4">
               <div className="flex items-center gap-2">
-                <span className="px-2.5 py-1 rounded-xl text-xs font-black bg-indigo-100 text-indigo-800">
+                <span className="px-2.5 py-1 rounded-xl text-xs font-black bg-indigo-100 dark:bg-indigo-950 text-indigo-800 dark:text-indigo-300">
                   {activeQuestion.topic}
                 </span>
-                <span className="text-xs font-semibold text-slate-500">
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">
                   {activeQuestion.subtopic || activeQuestion.subject}
                 </span>
               </div>
               <span className="text-xs font-bold text-slate-400">{activeQuestion.marks} mark</span>
             </div>
 
-            <h2 className="text-lg font-bold text-slate-900 mb-3">{activeQuestion.prompt}</h2>
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-3">{activeQuestion.prompt}</h2>
 
             {activeQuestion.equationDisplay && (
-              <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 text-center mb-5 font-mono text-xl font-bold text-indigo-950">
+              <div className="p-4 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900 text-center mb-5 font-mono text-xl font-bold text-indigo-950 dark:text-indigo-200">
                 {activeQuestion.equationDisplay}
               </div>
             )}
 
             {activeQuestion.contextPassage && (
-              <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-sm italic text-slate-700 mb-5 leading-relaxed">
+              <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 text-sm italic text-slate-700 dark:text-slate-300 mb-5 leading-relaxed">
                 {activeQuestion.contextPassage}
               </div>
             )}
@@ -320,16 +318,16 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                 {activeQuestion.options.map((opt) => {
                   const isUserPick = userAnswers[activeQuestion.id] === opt.label;
                   let style =
-                    'border-slate-200 bg-white hover:border-indigo-300 hover:bg-indigo-50/30 text-slate-800';
+                    'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-300 dark:hover:border-indigo-500 hover:bg-indigo-50/30 text-slate-800 dark:text-slate-200';
 
                   if (isSubmitted) {
                     if (opt.isCorrect) {
-                      style = 'border-emerald-500 bg-emerald-50 text-emerald-950 font-bold';
+                      style = 'border-emerald-500 dark:border-emerald-600 bg-emerald-50 dark:bg-emerald-950/40 text-emerald-950 dark:text-emerald-200 font-bold';
                     } else if (isUserPick && !opt.isCorrect) {
-                      style = 'border-rose-400 bg-rose-50 text-rose-950 line-through';
+                      style = 'border-rose-400 dark:border-rose-700 bg-rose-50 dark:bg-rose-950/40 text-rose-950 dark:text-rose-300 line-through';
                     }
                   } else if (isUserPick) {
-                    style = 'border-indigo-600 bg-indigo-50 text-indigo-950 font-bold';
+                    style = 'border-indigo-600 dark:border-indigo-500 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-950 dark:text-indigo-200 font-bold';
                   }
 
                   return (
@@ -345,10 +343,10 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                     >
                       <span>{opt.label}</span>
                       {isSubmitted && opt.isCorrect && (
-                        <CheckCircle2 className="w-5 h-5 text-emerald-600" />
+                        <CheckCircle2 className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />
                       )}
                       {isSubmitted && isUserPick && !opt.isCorrect && (
-                        <XCircle className="w-5 h-5 text-rose-600" />
+                        <XCircle className="w-5 h-5 text-rose-600 dark:text-rose-400" />
                       )}
                     </button>
                   );
@@ -367,7 +365,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                       setNumericInputs((prev) => ({ ...prev, [activeQuestion.id]: e.target.value }))
                     }
                     placeholder="Enter answer..."
-                    className="flex-1 px-4 py-3 rounded-2xl border border-slate-300 font-mono text-base font-bold outline-none focus:border-indigo-600"
+                    className="flex-1 px-4 py-3 rounded-2xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-base font-bold outline-none focus:border-indigo-600 dark:focus:border-indigo-400"
                   />
                   {!isSubmitted ? (
                     <button
@@ -379,7 +377,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
                   ) : (
                     <button
                       onClick={handleResetCurrent}
-                      className="p-3 rounded-2xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold flex items-center gap-1"
+                      className="p-3 rounded-2xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 text-xs font-semibold flex items-center gap-1"
                     >
                       <RotateCcw className="w-4 h-4" />
                       <span>Retry</span>
@@ -390,13 +388,13 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
             )}
 
             {/* Hint & Reset controls */}
-            <div className="flex items-center justify-between gap-2 pt-4 border-t border-slate-100">
+            <div className="flex items-center justify-between gap-2 pt-4 border-t border-slate-100 dark:border-slate-800">
               <button
                 onClick={handleRevealHint}
                 disabled={currentHint >= activeQuestion.hints.length}
-                className="px-3.5 py-1.5 rounded-xl border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900 text-xs font-bold flex items-center gap-1.5 disabled:opacity-40"
+                className="px-3.5 py-1.5 rounded-xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-950/40 hover:bg-amber-100 dark:hover:bg-amber-950/60 text-amber-900 dark:text-amber-300 text-xs font-bold flex items-center gap-1.5 disabled:opacity-40"
               >
-                <Lightbulb className="w-3.5 h-3.5 text-amber-600" />
+                <Lightbulb className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
                 <span>
                   {currentHint === 0 ? 'Socratic Hint' : `Hint (${currentHint}/${activeQuestion.hints.length})`}
                 </span>
@@ -405,7 +403,7 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
               {isSubmitted && (
                 <button
                   onClick={handleResetCurrent}
-                  className="text-xs font-bold text-indigo-600 hover:text-indigo-800 flex items-center gap-1"
+                  className="text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 flex items-center gap-1"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
                   <span>Try Again</span>
@@ -415,10 +413,10 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
 
             {/* Revealed Hints */}
             {currentHint > 0 && (
-              <div className="mt-4 p-3.5 rounded-2xl bg-amber-50/80 border border-amber-200 text-xs space-y-1.5">
-                <span className="font-bold text-amber-900 block">Socratic Hint:</span>
+              <div className="mt-4 p-3.5 rounded-2xl bg-amber-50/80 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/60 text-xs space-y-1.5">
+                <span className="font-bold text-amber-900 dark:text-amber-300 block">Socratic Hint:</span>
                 {activeQuestion.hints.slice(0, currentHint).map((h, i) => (
-                  <p key={i} className="text-amber-950 font-medium pl-2 border-l-2 border-amber-400">
+                  <p key={i} className="text-amber-950 dark:text-amber-200 font-medium pl-2 border-l-2 border-amber-400">
                     {h}
                   </p>
                 ))}
@@ -427,17 +425,17 @@ export const PracticeArenaView: React.FC<PracticeArenaViewProps> = ({
 
             {/* Step-by-Step Mark Scheme Breakdown */}
             {isSubmitted && (
-              <div className="mt-4 p-4 rounded-2xl bg-indigo-50/70 border border-indigo-200 text-xs space-y-2">
-                <div className="font-extrabold text-indigo-900 flex items-center gap-1.5 text-sm">
-                  <Sparkles className="w-4 h-4 text-indigo-600" />
+              <div className="mt-4 p-4 rounded-2xl bg-indigo-50/70 dark:bg-indigo-950/30 border border-indigo-200 dark:border-indigo-900 text-xs space-y-2">
+                <div className="font-extrabold text-indigo-900 dark:text-indigo-300 flex items-center gap-1.5 text-sm">
+                  <Sparkles className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
                   <span>Method: {activeQuestion.stepByStepExplanation.methodName}</span>
                 </div>
-                <ul className="list-disc list-inside space-y-1 text-slate-700 pl-1">
+                <ul className="list-disc list-inside space-y-1 text-slate-700 dark:text-slate-300 pl-1">
                   {activeQuestion.stepByStepExplanation.steps.map((st, sIdx) => (
                     <li key={sIdx}>{st}</li>
                   ))}
                 </ul>
-                <div className="bg-white p-2.5 rounded-xl border border-indigo-100 text-indigo-950 font-semibold">
+                <div className="bg-white dark:bg-slate-800 p-2.5 rounded-xl border border-indigo-100 dark:border-slate-700 text-indigo-950 dark:text-indigo-200 font-semibold">
                   📌 <strong>SATs Key Takeaway:</strong> {activeQuestion.stepByStepExplanation.keyTakeaway}
                 </div>
               </div>

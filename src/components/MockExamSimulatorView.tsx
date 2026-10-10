@@ -89,7 +89,7 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
   const [flaggedQuestions, setFlaggedQuestions] = useState<Record<string, boolean>>({});
   const [isExamSubmitted, setIsExamSubmitted] = useState<boolean>(false);
 
-  const mockQuestions = SPRINT_SAMPLE_QUESTIONS; // Mock questions set
+  const mockQuestions = SPRINT_SAMPLE_QUESTIONS;
   const currentQ = mockQuestions[currentExamIndex];
 
   const handleStartExam = () => {
@@ -115,15 +115,15 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
   if (!isExamActive) {
     return (
       <div className="max-w-4xl mx-auto py-8 px-4">
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-6 sm:p-10">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase tracking-wide mb-3">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-sm border border-slate-200 dark:border-slate-800 p-6 sm:p-10 transition-colors">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 dark:bg-indigo-950/40 text-indigo-700 dark:text-indigo-300 text-xs font-bold uppercase tracking-wide mb-3">
             <FileCheck className="w-4 h-4" />
             <span>KS2 Mock Exam Simulator</span>
           </div>
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight mb-2">
+          <h1 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-2">
             Simulate the Real Year 6 SATs Papers
           </h1>
-          <p className="text-sm text-slate-600 mb-8">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-8">
             Experience realistic examination papers formatted strictly to Department for Education standards.
           </p>
 
@@ -140,16 +140,16 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
                   }}
                   className={`p-5 rounded-2xl border cursor-pointer transition-all ${
                     isSelected
-                      ? 'border-indigo-600 bg-indigo-50/50 shadow-md ring-2 ring-indigo-200'
-                      : 'border-slate-200 bg-white hover:border-slate-300'
+                      ? 'border-indigo-600 dark:border-indigo-500 bg-indigo-50/50 dark:bg-slate-800 shadow-md ring-2 ring-indigo-200 dark:ring-indigo-800'
+                      : 'border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:border-slate-300 dark:hover:border-slate-700'
                   }`}
                 >
-                  <div className="text-[11px] font-bold uppercase text-indigo-600 mb-1">
+                  <div className="text-[11px] font-bold uppercase text-indigo-600 dark:text-indigo-400 mb-1">
                     {paper.subject}
                   </div>
-                  <h3 className="font-bold text-base text-slate-900 mb-2">{paper.title}</h3>
-                  <p className="text-xs text-slate-500 mb-4">{paper.description}</p>
-                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 pt-3 border-t border-slate-200">
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white mb-2">{paper.title}</h3>
+                  <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">{paper.description}</p>
+                  <div className="flex items-center justify-between text-xs font-semibold text-slate-700 dark:text-slate-300 pt-3 border-t border-slate-200 dark:border-slate-800">
                     <span className="flex items-center gap-1">
                       <Timer className="w-3.5 h-3.5 text-amber-500" />
                       {paper.standardDurationMins} Mins
@@ -164,13 +164,13 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
             })}
           </div>
 
-          {/* Official DfE Exam Cover Instructions */}
-          <div className="bg-slate-50 border border-slate-200 rounded-2xl p-6 mb-8 text-left">
-            <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wide mb-3 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-indigo-600" />
+          {/* Instructions */}
+          <div className="bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-2xl p-6 mb-8 text-left">
+            <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wide mb-3 flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-indigo-600 dark:text-indigo-400" />
               Examination Instructions for Saad:
             </h3>
-            <ul className="space-y-2 text-xs text-slate-700 list-disc list-inside">
+            <ul className="space-y-2 text-xs text-slate-700 dark:text-slate-300 list-disc list-inside">
               {selectedPaper.instructions.map((inst, i) => (
                 <li key={i}>{inst}</li>
               ))}
@@ -200,25 +200,25 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
       if (user === corr) score += 1;
     });
 
-    const scaledScore = Math.round(85 + (score / mockQuestions.length) * 35); // SATs scaled score range 80 - 120
+    const scaledScore = Math.round(85 + (score / mockQuestions.length) * 35);
 
     return (
       <div className="max-w-3xl mx-auto py-10 px-4 text-center">
-        <div className="bg-white rounded-3xl p-8 border border-slate-200 shadow-xl">
+        <div className="bg-white dark:bg-slate-900 rounded-3xl p-8 border border-slate-200 dark:border-slate-800 shadow-xl transition-colors">
           <div className="text-5xl mb-3">🎓</div>
-          <h2 className="text-2xl font-black text-slate-900 mb-1">Mock Exam Finished!</h2>
-          <p className="text-xs text-slate-500 mb-6">{selectedPaper.title} • {selectedPaper.subject}</p>
+          <h2 className="text-2xl font-black text-slate-900 dark:text-white mb-1">Mock Exam Finished!</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mb-6">{selectedPaper.title} • {selectedPaper.subject}</p>
 
           <div className="grid grid-cols-2 gap-4 max-w-sm mx-auto mb-8">
-            <div className="p-4 rounded-2xl bg-indigo-50 border border-indigo-100">
-              <span className="text-[11px] font-bold text-indigo-600 uppercase block">Raw Score</span>
-              <span className="text-3xl font-black text-indigo-950">{score} / {mockQuestions.length}</span>
+            <div className="p-4 rounded-2xl bg-indigo-50 dark:bg-slate-800 border border-indigo-100 dark:border-slate-700">
+              <span className="text-[11px] font-bold text-indigo-600 dark:text-indigo-400 uppercase block">Raw Score</span>
+              <span className="text-3xl font-black text-indigo-950 dark:text-white">{score} / {mockQuestions.length}</span>
             </div>
 
-            <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100">
-              <span className="text-[11px] font-bold text-emerald-600 uppercase block">DfE Scaled Score</span>
-              <span className="text-3xl font-black text-emerald-950">{scaledScore}</span>
-              <span className="text-[10px] font-bold text-emerald-700 block mt-0.5">
+            <div className="p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-100 dark:border-emerald-800">
+              <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 uppercase block">DfE Scaled Score</span>
+              <span className="text-3xl font-black text-emerald-950 dark:text-emerald-200">{scaledScore}</span>
+              <span className="text-[10px] font-bold text-emerald-700 dark:text-emerald-400 block mt-0.5">
                 {scaledScore >= 100 ? 'Expected Standard Met! ✅' : 'Working Towards'}
               </span>
             </div>
@@ -238,7 +238,7 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
   return (
     <div className="max-w-6xl mx-auto py-6 px-4">
       {/* Top Exam Status Bar */}
-      <div className="bg-slate-900 text-white rounded-2xl p-4 mb-4 flex items-center justify-between shadow-md">
+      <div className="bg-slate-900 dark:bg-slate-950 text-white rounded-2xl p-4 mb-4 flex items-center justify-between shadow-md border border-slate-800">
         <div className="flex items-center gap-3">
           <div className="font-bold text-sm text-indigo-300">
             {selectedPaper.title}
@@ -271,8 +271,8 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
       {/* Main Grid: Navigator + Exam Booklet */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Question Matrix */}
-        <div className="lg:col-span-3 bg-white rounded-2xl border border-slate-200 p-4 h-fit">
-          <span className="text-xs font-bold text-slate-600 block mb-3">Question Palette:</span>
+        <div className="lg:col-span-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-4 h-fit transition-colors">
+          <span className="text-xs font-bold text-slate-600 dark:text-slate-400 block mb-3">Question Palette:</span>
           <div className="grid grid-cols-5 gap-1.5">
             {mockQuestions.map((q, i) => {
               const isAnswered = !!examAnswers[q.id];
@@ -286,12 +286,12 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
                     playSound.playClick();
                     setCurrentExamIndex(i);
                   }}
-                  className={`w-9 h-9 rounded-lg text-xs font-bold flex items-center justify-center relative border ${
+                  className={`w-9 h-9 rounded-lg text-xs font-bold flex items-center justify-center relative border transition-all ${
                     isCurr
                       ? 'bg-indigo-600 text-white border-indigo-700'
                       : isAnswered
-                      ? 'bg-emerald-100 text-emerald-800 border-emerald-300'
-                      : 'bg-slate-50 text-slate-700 border-slate-200'
+                      ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-800 dark:text-emerald-300 border-emerald-300 dark:border-emerald-800'
+                      : 'bg-slate-50 dark:bg-slate-800 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-700'
                   }`}
                 >
                   {i + 1}
@@ -306,13 +306,13 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
 
         {/* Exam Booklet Layout */}
         <div className="lg:col-span-9 space-y-4">
-          <div className="bg-white rounded-3xl border-2 border-slate-300 p-8 shadow-sm">
-            <div className="flex items-center justify-between pb-4 border-b border-slate-200 mb-6">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl border-2 border-slate-300 dark:border-slate-800 p-8 shadow-sm transition-colors">
+            <div className="flex items-center justify-between pb-4 border-b border-slate-200 dark:border-slate-800 mb-6">
               <span className="text-xs font-bold text-slate-400">Question {currentExamIndex + 1}</span>
               <button
                 onClick={() => handleToggleFlag(currentQ.id)}
                 className={`text-xs font-bold flex items-center gap-1 ${
-                  flaggedQuestions[currentQ.id] ? 'text-amber-600' : 'text-slate-400 hover:text-slate-600'
+                  flaggedQuestions[currentQ.id] ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 hover:text-slate-600 dark:hover:text-slate-300'
                 }`}
               >
                 <Flag className="w-3.5 h-3.5" />
@@ -320,10 +320,10 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
               </button>
             </div>
 
-            <p className="font-semibold text-slate-900 text-base mb-4">{currentQ.prompt}</p>
+            <p className="font-semibold text-slate-900 dark:text-white text-base mb-4">{currentQ.prompt}</p>
 
             {currentQ.equationDisplay && (
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 font-mono text-xl font-bold text-slate-900 text-center mb-6">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 font-mono text-xl font-bold text-slate-900 dark:text-white text-center mb-6">
                 {currentQ.equationDisplay}
               </div>
             )}
@@ -337,7 +337,7 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
                     setExamAnswers((prev) => ({ ...prev, [currentQ.id]: e.target.value }))
                   }
                   placeholder="Answer..."
-                  className="w-full px-4 py-3 rounded-xl border border-slate-300 font-mono text-base font-bold outline-none focus:border-indigo-600"
+                  className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white font-mono text-base font-bold outline-none focus:border-indigo-600"
                 />
               </div>
             )}
@@ -348,10 +348,10 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
                   <button
                     key={opt.id}
                     onClick={() => setExamAnswers((prev) => ({ ...prev, [currentQ.id]: opt.label }))}
-                    className={`w-full p-3.5 rounded-xl border text-left text-xs font-medium ${
+                    className={`w-full p-3.5 rounded-xl border text-left text-xs font-medium transition-colors ${
                       examAnswers[currentQ.id] === opt.label
-                        ? 'border-indigo-600 bg-indigo-50 font-bold text-indigo-950'
-                        : 'border-slate-200 hover:bg-slate-50'
+                        ? 'border-indigo-600 dark:border-indigo-500 bg-indigo-50 dark:bg-indigo-950/50 font-bold text-indigo-950 dark:text-indigo-200'
+                        : 'border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-800 dark:text-slate-200'
                     }`}
                   >
                     {opt.label}
@@ -360,11 +360,11 @@ export const MockExamSimulatorView: React.FC<MockExamSimulatorViewProps> = ({
               </div>
             )}
 
-            <div className="flex justify-between pt-4 border-t border-slate-100">
+            <div className="flex justify-between pt-4 border-t border-slate-100 dark:border-slate-800">
               <button
                 disabled={currentExamIndex === 0}
                 onClick={() => setCurrentExamIndex((p) => Math.max(0, p - 1))}
-                className="px-4 py-2 border rounded-xl text-xs font-semibold disabled:opacity-40"
+                className="px-4 py-2 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 rounded-xl text-xs font-semibold disabled:opacity-40"
               >
                 Previous
               </button>

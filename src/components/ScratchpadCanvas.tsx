@@ -41,7 +41,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   const [tool, setTool] = useState<ToolMode>('pen');
-  const [color, setColor] = useState<string>('#1e293b'); // slate-800
+  const [color, setColor] = useState<string>('#1e293b');
   const [brushSize, setBrushSize] = useState<number>(3);
   const [paperType, setPaperType] = useState<PaperType>('grid');
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
@@ -70,7 +70,6 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
 
   useEffect(() => {
     if (isOpen) {
-      // Allow DOM to layout first
       const timer = setTimeout(() => {
         resizeCanvas();
       }, 50);
@@ -88,7 +87,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
     ctx.fillRect(0, 0, width, height);
 
     if (paperType === 'grid') {
-      ctx.strokeStyle = '#e2e8f0'; // light slate grid
+      ctx.strokeStyle = '#e2e8f0';
       ctx.lineWidth = 1;
       const gridSize = 24;
 
@@ -237,7 +236,6 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
     if (canvas) {
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        // Draw segment
         const points = updatedStroke.points;
         const len = points.length;
         if (len >= 2) {
@@ -312,19 +310,19 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
 
   return (
     <div
-      className={`flex flex-col bg-white rounded-2xl shadow-xl border border-indigo-100 overflow-hidden transition-all duration-300 ${
+      className={`flex flex-col bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-indigo-100 dark:border-slate-800 overflow-hidden transition-all duration-300 ${
         isExpanded ? 'fixed inset-4 z-50 shadow-2xl' : 'relative h-96'
       } ${className}`}
     >
       {/* Top Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-slate-50 border-b border-slate-200 text-sm">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-2.5 bg-slate-50 dark:bg-slate-850 dark:bg-slate-800/90 border-b border-slate-200 dark:border-slate-750 text-sm transition-colors">
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <span className="font-semibold text-slate-700 text-xs sm:text-sm flex items-center gap-1.5">
+          <span className="font-semibold text-slate-700 dark:text-slate-200 text-xs sm:text-sm flex items-center gap-1.5">
             <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
             Working Scratchpad
           </span>
 
-          <span className="text-slate-300">|</span>
+          <span className="text-slate-300 dark:text-slate-600">|</span>
 
           {/* Tool Modes */}
           <button
@@ -333,7 +331,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
             className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-medium ${
               tool === 'pen'
                 ? 'bg-indigo-600 text-white shadow-sm'
-                : 'bg-white text-slate-600 hover:bg-slate-100'
+                : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600'
             }`}
             title="Pen (Ballpoint)"
           >
@@ -347,7 +345,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
             className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-medium ${
               tool === 'highlighter'
                 ? 'bg-amber-500 text-white shadow-sm'
-                : 'bg-white text-slate-600 hover:bg-slate-100'
+                : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600'
             }`}
             title="Highlighter"
           >
@@ -361,7 +359,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
             className={`p-1.5 rounded-lg transition-colors flex items-center gap-1 text-xs font-medium ${
               tool === 'eraser'
                 ? 'bg-rose-500 text-white shadow-sm'
-                : 'bg-white text-slate-600 hover:bg-slate-100'
+                : 'bg-white dark:bg-slate-700 text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600'
             }`}
             title="Eraser"
           >
@@ -381,7 +379,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
                   onClick={() => setColor(c.value)}
                   style={{ backgroundColor: c.value }}
                   className={`w-5 h-5 rounded-full border-2 transition-transform ${
-                    color === c.value ? 'scale-125 border-indigo-400 shadow' : 'border-white hover:scale-110'
+                    color === c.value ? 'scale-125 border-indigo-400 shadow' : 'border-white dark:border-slate-700 hover:scale-110'
                   }`}
                   title={c.label}
                 />
@@ -393,7 +391,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
           <select
             value={brushSize}
             onChange={(e) => setBrushSize(Number(e.target.value))}
-            className="text-xs bg-white border border-slate-200 rounded-md px-1.5 py-1 text-slate-700 outline-none focus:ring-1 focus:ring-indigo-500"
+            className="text-xs bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-md px-1.5 py-1 text-slate-700 dark:text-slate-200 outline-none focus:ring-1 focus:ring-indigo-500"
           >
             <option value={2}>Fine</option>
             <option value={3}>Medium</option>
@@ -408,7 +406,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
                 prev === 'grid' ? 'lined' : prev === 'lined' ? 'blank' : 'grid'
               )
             }
-            className="p-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 text-xs flex items-center gap-1"
+            className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 text-xs flex items-center gap-1"
             title="Toggle Paper Style (Grid / Lined / Blank)"
           >
             <Grid className="w-3.5 h-3.5" />
@@ -420,7 +418,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
             type="button"
             onClick={handleUndo}
             disabled={strokes.length === 0}
-            className="p-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 disabled:opacity-40 text-xs"
+            className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 disabled:opacity-40 text-xs"
             title="Undo"
           >
             <RotateCcw className="w-3.5 h-3.5" />
@@ -430,7 +428,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
           <button
             type="button"
             onClick={handleClear}
-            className="p-1.5 bg-white border border-slate-200 rounded-lg text-rose-600 hover:bg-rose-50 text-xs"
+            className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-xs"
             title="Clear All Working Out"
           >
             <Trash2 className="w-3.5 h-3.5" />
@@ -440,7 +438,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
           <button
             type="button"
             onClick={() => setIsExpanded(!isExpanded)}
-            className="p-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 text-xs"
+            className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 text-xs"
             title={isExpanded ? 'Minimize Scratchpad' : 'Expand Fullscreen'}
           >
             {isExpanded ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
@@ -450,7 +448,7 @@ export const ScratchpadCanvas: React.FC<ScratchpadCanvasProps> = ({
           <button
             type="button"
             onClick={handleDownload}
-            className="p-1.5 bg-white border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-100 text-xs"
+            className="p-1.5 bg-white dark:bg-slate-700 border border-slate-200 dark:border-slate-600 rounded-lg text-slate-600 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-600 text-xs"
             title="Save Working Out as Image"
           >
             <Download className="w-3.5 h-3.5" />
